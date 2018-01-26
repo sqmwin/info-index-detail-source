@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindnode.immipal.mapper.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.mindnode.immipal.pojo.News">
+    <id column="news_id" jdbcType="INTEGER" property="newsId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="news_title" jdbcType="VARCHAR" property="newsTitle" />
+    <result column="news_author" jdbcType="VARCHAR" property="newsAuthor" />
+    <result column="news_content" jdbcType="VARCHAR" property="newsContent" />
+    <result column="show_img_count" jdbcType="INTEGER" property="showImgCount" />
+    <result column="has_video" jdbcType="BIT" property="hasVideo" />
+    <result column="recommend" jdbcType="BIT" property="recommend" />
+    <result column="news_top" jdbcType="BIT" property="newsTop" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mindnode.immipal.pojo.News">
+    <result column="show_img_urls" jdbcType="LONGVARCHAR" property="showImgUrls" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    news_id, category_id, news_title, news_author, news_content, show_img_count, has_video, 
+    recommend, news_top
+  </sql>
+  <sql id="Blob_Column_List">
+    show_img_urls
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.mindnode.immipal.pojo.NewsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.mindnode.immipal.pojo.NewsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mindnode.immipal.pojo.NewsExample">
+    delete from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mindnode.immipal.pojo.News">
+    insert into news (news_id, category_id, news_title, 
+      news_author, news_content, show_img_count, 
+      has_video, recommend, news_top, show_img_urls
+      )
+    values (#{newsId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{newsTitle,jdbcType=VARCHAR}, 
+      #{newsAuthor,jdbcType=VARCHAR}, #{newsContent,jdbcType=VARCHAR}, #{showImgCount,jdbcType=INTEGER}, 
+      #{hasVideo,jdbcType=BIT}, #{recommend,jdbcType=BIT}, #{newsTop,jdbcType=BIT}, #{showImgUrls,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mindnode.immipal.pojo.News">
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        news_id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="newsTitle != null">
+        news_title,
+      </if>
+      <if test="newsAuthor != null">
+        news_author,
+      </if>
+      <if test="newsContent != null">
+        news_content,
+      </if>
+      <if test="showImgCount != null">
+        show_img_count,
+      </if>
+      <if test="hasVideo != null">
+        has_video,
+      </if>
+      <if test="recommend != null">
+        recommend,
+      </if>
+      <if test="newsTop != null">
+        news_top,
+      </if>
+      <if test="showImgUrls != null">
+        show_img_urls,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        #{newsId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="newsTitle != null">
+        #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsAuthor != null">
+        #{newsAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="newsContent != null">
+        #{newsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="showImgCount != null">
+        #{showImgCount,jdbcType=INTEGER},
+      </if>
+      <if test="hasVideo != null">
+        #{hasVideo,jdbcType=BIT},
+      </if>
+      <if test="recommend != null">
+        #{recommend,jdbcType=BIT},
+      </if>
+      <if test="newsTop != null">
+        #{newsTop,jdbcType=BIT},
+      </if>
+      <if test="showImgUrls != null">
+        #{showImgUrls,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mindnode.immipal.pojo.NewsExample" resultType="java.lang.Long">
+    select count(*) from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update news
+    <set>
+      <if test="record.newsId != null">
+        news_id = #{record.newsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.categoryId != null">
+        category_id = #{record.categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newsTitle != null">
+        news_title = #{record.newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsAuthor != null">
+        news_author = #{record.newsAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsContent != null">
+        news_content = #{record.newsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.showImgCount != null">
+        show_img_count = #{record.showImgCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.hasVideo != null">
+        has_video = #{record.hasVideo,jdbcType=BIT},
+      </if>
+      <if test="record.recommend != null">
+        recommend = #{record.recommend,jdbcType=BIT},
+      </if>
+      <if test="record.newsTop != null">
+        news_top = #{record.newsTop,jdbcType=BIT},
+      </if>
+      <if test="record.showImgUrls != null">
+        show_img_urls = #{record.showImgUrls,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update news
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      news_title = #{record.newsTitle,jdbcType=VARCHAR},
+      news_author = #{record.newsAuthor,jdbcType=VARCHAR},
+      news_content = #{record.newsContent,jdbcType=VARCHAR},
+      show_img_count = #{record.showImgCount,jdbcType=INTEGER},
+      has_video = #{record.hasVideo,jdbcType=BIT},
+      recommend = #{record.recommend,jdbcType=BIT},
+      news_top = #{record.newsTop,jdbcType=BIT},
+      show_img_urls = #{record.showImgUrls,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update news
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+      category_id = #{record.categoryId,jdbcType=INTEGER},
+      news_title = #{record.newsTitle,jdbcType=VARCHAR},
+      news_author = #{record.newsAuthor,jdbcType=VARCHAR},
+      news_content = #{record.newsContent,jdbcType=VARCHAR},
+      show_img_count = #{record.showImgCount,jdbcType=INTEGER},
+      has_video = #{record.hasVideo,jdbcType=BIT},
+      recommend = #{record.recommend,jdbcType=BIT},
+      news_top = #{record.newsTop,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mindnode.immipal.pojo.News">
+    update news
+    <set>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="newsTitle != null">
+        news_title = #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newsAuthor != null">
+        news_author = #{newsAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="newsContent != null">
+        news_content = #{newsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="showImgCount != null">
+        show_img_count = #{showImgCount,jdbcType=INTEGER},
+      </if>
+      <if test="hasVideo != null">
+        has_video = #{hasVideo,jdbcType=BIT},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=BIT},
+      </if>
+      <if test="newsTop != null">
+        news_top = #{newsTop,jdbcType=BIT},
+      </if>
+      <if test="showImgUrls != null">
+        show_img_urls = #{showImgUrls,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mindnode.immipal.pojo.News">
+    update news
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      news_title = #{newsTitle,jdbcType=VARCHAR},
+      news_author = #{newsAuthor,jdbcType=VARCHAR},
+      news_content = #{newsContent,jdbcType=VARCHAR},
+      show_img_count = #{showImgCount,jdbcType=INTEGER},
+      has_video = #{hasVideo,jdbcType=BIT},
+      recommend = #{recommend,jdbcType=BIT},
+      news_top = #{newsTop,jdbcType=BIT},
+      show_img_urls = #{showImgUrls,jdbcType=LONGVARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mindnode.immipal.pojo.News">
+    update news
+    set category_id = #{categoryId,jdbcType=INTEGER},
+      news_title = #{newsTitle,jdbcType=VARCHAR},
+      news_author = #{newsAuthor,jdbcType=VARCHAR},
+      news_content = #{newsContent,jdbcType=VARCHAR},
+      show_img_count = #{showImgCount,jdbcType=INTEGER},
+      has_video = #{hasVideo,jdbcType=BIT},
+      recommend = #{recommend,jdbcType=BIT},
+      news_top = #{newsTop,jdbcType=BIT}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+</mapper>
