@@ -2,8 +2,9 @@ package com.mindnode.immipal.mapper;
 
 import com.mindnode.immipal.pojo.News;
 import com.mindnode.immipal.pojo.NewsExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface NewsMapper {
     long countByExample(NewsExample example);

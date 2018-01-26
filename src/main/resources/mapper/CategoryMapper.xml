@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.mindnode.immipal.pojo.Category">
     <id column="category_id" jdbcType="INTEGER" property="categoryId" />
     <result column="categoryTitle" jdbcType="VARCHAR" property="categorytitle" />
+    <result column="category_level" jdbcType="INTEGER" property="categoryLevel" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -64,7 +65,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    category_id, categoryTitle
+    category_id, categoryTitle, category_level
   </sql>
   <select id="selectByExample" parameterType="com.mindnode.immipal.pojo.CategoryExample" resultMap="BaseResultMap">
     select
@@ -105,8 +106,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.mindnode.immipal.pojo.Category">
-    insert into category (category_id, categoryTitle)
-    values (#{categoryId,jdbcType=INTEGER}, #{categorytitle,jdbcType=VARCHAR})
+    insert into category (category_id, categoryTitle, category_level
+      )
+    values (#{categoryId,jdbcType=INTEGER}, #{categorytitle,jdbcType=VARCHAR}, #{categoryLevel,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.mindnode.immipal.pojo.Category">
     insert into category
@@ -117,6 +120,9 @@
       <if test="categorytitle != null">
         categoryTitle,
       </if>
+      <if test="categoryLevel != null">
+        category_level,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
@@ -124,6 +130,9 @@
       </if>
       <if test="categorytitle != null">
         #{categorytitle,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryLevel != null">
+        #{categoryLevel,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -142,6 +151,9 @@
       <if test="record.categorytitle != null">
         categoryTitle = #{record.categorytitle,jdbcType=VARCHAR},
       </if>
+      <if test="record.categoryLevel != null">
+        category_level = #{record.categoryLevel,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -150,7 +162,8 @@
   <update id="updateByExample" parameterType="map">
     update category
     set category_id = #{record.categoryId,jdbcType=INTEGER},
-      categoryTitle = #{record.categorytitle,jdbcType=VARCHAR}
+      categoryTitle = #{record.categorytitle,jdbcType=VARCHAR},
+      category_level = #{record.categoryLevel,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -161,12 +174,16 @@
       <if test="categorytitle != null">
         categoryTitle = #{categorytitle,jdbcType=VARCHAR},
       </if>
+      <if test="categoryLevel != null">
+        category_level = #{categoryLevel,jdbcType=INTEGER},
+      </if>
     </set>
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mindnode.immipal.pojo.Category">
     update category
-    set categoryTitle = #{categorytitle,jdbcType=VARCHAR}
+    set categoryTitle = #{categorytitle,jdbcType=VARCHAR},
+      category_level = #{categoryLevel,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
 </mapper>

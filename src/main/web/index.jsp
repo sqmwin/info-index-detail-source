@@ -12,5 +12,6 @@
   </head>
   <body>
  hello
+ <a href="${pageContext.request.contextPath}/admin_login_page">后台管理</a>
   </body>
 </html>

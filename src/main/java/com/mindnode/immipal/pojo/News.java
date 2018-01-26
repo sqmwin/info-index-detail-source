@@ -6,8 +6,6 @@ import java.io.Serializable;
  * @author 
  */
 public class News implements Serializable {
-    private static final long serialVersionUID = -8351297822541225825L;
-
     private Integer newsId;
 
     private Integer categoryId;
@@ -26,7 +24,11 @@ public class News implements Serializable {
 
     private Boolean newsTop;
 
+    private Long newsCreateTime;
+
     private String showImgUrls;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getNewsId() {
         return newsId;
@@ -100,6 +102,14 @@ public class News implements Serializable {
         this.newsTop = newsTop;
     }
 
+    public Long getNewsCreateTime() {
+        return newsCreateTime;
+    }
+
+    public void setNewsCreateTime(Long newsCreateTime) {
+        this.newsCreateTime = newsCreateTime;
+    }
+
     public String getShowImgUrls() {
         return showImgUrls;
     }
@@ -129,6 +139,7 @@ public class News implements Serializable {
             && (this.getHasVideo() == null ? other.getHasVideo() == null : this.getHasVideo().equals(other.getHasVideo()))
             && (this.getRecommend() == null ? other.getRecommend() == null : this.getRecommend().equals(other.getRecommend()))
             && (this.getNewsTop() == null ? other.getNewsTop() == null : this.getNewsTop().equals(other.getNewsTop()))
+            && (this.getNewsCreateTime() == null ? other.getNewsCreateTime() == null : this.getNewsCreateTime().equals(other.getNewsCreateTime()))
             && (this.getShowImgUrls() == null ? other.getShowImgUrls() == null : this.getShowImgUrls().equals(other.getShowImgUrls()));
     }
 
@@ -145,6 +156,7 @@ public class News implements Serializable {
         result = prime * result + ((getHasVideo() == null) ? 0 : getHasVideo().hashCode());
         result = prime * result + ((getRecommend() == null) ? 0 : getRecommend().hashCode());
         result = prime * result + ((getNewsTop() == null) ? 0 : getNewsTop().hashCode());
+        result = prime * result + ((getNewsCreateTime() == null) ? 0 : getNewsCreateTime().hashCode());
         result = prime * result + ((getShowImgUrls() == null) ? 0 : getShowImgUrls().hashCode());
         return result;
     }
@@ -164,6 +176,7 @@ public class News implements Serializable {
         sb.append(", hasVideo=").append(hasVideo);
         sb.append(", recommend=").append(recommend);
         sb.append(", newsTop=").append(newsTop);
+        sb.append(", newsCreateTime=").append(newsCreateTime);
         sb.append(", showImgUrls=").append(showImgUrls);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

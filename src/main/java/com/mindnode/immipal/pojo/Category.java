@@ -6,12 +6,13 @@ import java.io.Serializable;
  * @author 
  */
 public class Category implements Serializable {
-
-    private static final long serialVersionUID = 5289057923174754642L;
-
     private Integer categoryId;
 
     private String categorytitle;
+
+    private Integer categoryLevel;
+
+    private static final long serialVersionUID = 1L;
 
     public Integer getCategoryId() {
         return categoryId;
@@ -29,6 +30,14 @@ public class Category implements Serializable {
         this.categorytitle = categorytitle;
     }
 
+    public Integer getCategoryLevel() {
+        return categoryLevel;
+    }
+
+    public void setCategoryLevel(Integer categoryLevel) {
+        this.categoryLevel = categoryLevel;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -42,7 +51,8 @@ public class Category implements Serializable {
         }
         Category other = (Category) that;
         return (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
-            && (this.getCategorytitle() == null ? other.getCategorytitle() == null : this.getCategorytitle().equals(other.getCategorytitle()));
+            && (this.getCategorytitle() == null ? other.getCategorytitle() == null : this.getCategorytitle().equals(other.getCategorytitle()))
+            && (this.getCategoryLevel() == null ? other.getCategoryLevel() == null : this.getCategoryLevel().equals(other.getCategoryLevel()));
     }
 
     @Override
@@ -51,6 +61,7 @@ public class Category implements Serializable {
         int result = 1;
         result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
         result = prime * result + ((getCategorytitle() == null) ? 0 : getCategorytitle().hashCode());
+        result = prime * result + ((getCategoryLevel() == null) ? 0 : getCategoryLevel().hashCode());
         return result;
     }
 
@@ -62,6 +73,7 @@ public class Category implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", categoryId=").append(categoryId);
         sb.append(", categorytitle=").append(categorytitle);
+        sb.append(", categoryLevel=").append(categoryLevel);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

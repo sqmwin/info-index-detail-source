@@ -253,6 +253,66 @@ public class CategoryExample {
             addCriterion("categoryTitle not between", value1, value2, "categorytitle");
             return (Criteria) this;
         }
+
+        public Criteria andCategoryLevelIsNull() {
+            addCriterion("category_level is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelIsNotNull() {
+            addCriterion("category_level is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelEqualTo(Integer value) {
+            addCriterion("category_level =", value, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelNotEqualTo(Integer value) {
+            addCriterion("category_level <>", value, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelGreaterThan(Integer value) {
+            addCriterion("category_level >", value, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelGreaterThanOrEqualTo(Integer value) {
+            addCriterion("category_level >=", value, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelLessThan(Integer value) {
+            addCriterion("category_level <", value, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelLessThanOrEqualTo(Integer value) {
+            addCriterion("category_level <=", value, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelIn(List<Integer> values) {
+            addCriterion("category_level in", values, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelNotIn(List<Integer> values) {
+            addCriterion("category_level not in", values, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelBetween(Integer value1, Integer value2) {
+            addCriterion("category_level between", value1, value2, "categoryLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryLevelNotBetween(Integer value1, Integer value2) {
+            addCriterion("category_level not between", value1, value2, "categoryLevel");
+            return (Criteria) this;
+        }
     }
 
     /**

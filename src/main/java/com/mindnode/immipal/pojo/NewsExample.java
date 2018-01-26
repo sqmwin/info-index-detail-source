@@ -693,6 +693,66 @@ public class NewsExample {
             addCriterion("news_top not between", value1, value2, "newsTop");
             return (Criteria) this;
         }
+
+        public Criteria andNewsCreateTimeIsNull() {
+            addCriterion("news_create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeIsNotNull() {
+            addCriterion("news_create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeEqualTo(Long value) {
+            addCriterion("news_create_time =", value, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeNotEqualTo(Long value) {
+            addCriterion("news_create_time <>", value, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeGreaterThan(Long value) {
+            addCriterion("news_create_time >", value, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("news_create_time >=", value, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeLessThan(Long value) {
+            addCriterion("news_create_time <", value, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeLessThanOrEqualTo(Long value) {
+            addCriterion("news_create_time <=", value, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeIn(List<Long> values) {
+            addCriterion("news_create_time in", values, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeNotIn(List<Long> values) {
+            addCriterion("news_create_time not in", values, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeBetween(Long value1, Long value2) {
+            addCriterion("news_create_time between", value1, value2, "newsCreateTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsCreateTimeNotBetween(Long value1, Long value2) {
+            addCriterion("news_create_time not between", value1, value2, "newsCreateTime");
+            return (Criteria) this;
+        }
     }
 
     /**

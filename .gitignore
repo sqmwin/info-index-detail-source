@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+/src/main/web/bower_components/
+/src/main/web/build/
+/src/main/web/dist/
+/src/main/web/documentation/
+/src/main/web/META-INF/
+/src/main/web/pages/
+/src/main/web/plugins/
+/src/main/web/WEB-INF/lib/
+/target/

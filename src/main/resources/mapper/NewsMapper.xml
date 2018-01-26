@@ -11,6 +11,7 @@
     <result column="has_video" jdbcType="BIT" property="hasVideo" />
     <result column="recommend" jdbcType="BIT" property="recommend" />
     <result column="news_top" jdbcType="BIT" property="newsTop" />
+    <result column="news_create_time" jdbcType="BIGINT" property="newsCreateTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mindnode.immipal.pojo.News">
     <result column="show_img_urls" jdbcType="LONGVARCHAR" property="showImgUrls" />
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     news_id, category_id, news_title, news_author, news_content, show_img_count, has_video, 
-    recommend, news_top
+    recommend, news_top, news_create_time
   </sql>
   <sql id="Blob_Column_List">
     show_img_urls
@@ -139,12 +140,12 @@
   <insert id="insert" parameterType="com.mindnode.immipal.pojo.News">
     insert into news (news_id, category_id, news_title, 
       news_author, news_content, show_img_count, 
-      has_video, recommend, news_top, show_img_urls
-      )
+      has_video, recommend, news_top, news_create_time, 
+      show_img_urls)
     values (#{newsId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{newsTitle,jdbcType=VARCHAR}, 
       #{newsAuthor,jdbcType=VARCHAR}, #{newsContent,jdbcType=VARCHAR}, #{showImgCount,jdbcType=INTEGER}, 
-      #{hasVideo,jdbcType=BIT}, #{recommend,jdbcType=BIT}, #{newsTop,jdbcType=BIT}, #{showImgUrls,jdbcType=LONGVARCHAR}
-      )
+      #{hasVideo,jdbcType=BIT}, #{recommend,jdbcType=BIT}, #{newsTop,jdbcType=BIT}, #{newsCreateTime,jdbcType=BIGINT}, 
+      #{showImgUrls,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mindnode.immipal.pojo.News">
     insert into news
@@ -175,6 +176,9 @@
       </if>
       <if test="newsTop != null">
         news_top,
+      </if>
+      <if test="newsCreateTime != null">
+        news_create_time,
       </if>
       <if test="showImgUrls != null">
         show_img_urls,
@@ -207,6 +211,9 @@
       </if>
       <if test="newsTop != null">
         #{newsTop,jdbcType=BIT},
+      </if>
+      <if test="newsCreateTime != null">
+        #{newsCreateTime,jdbcType=BIGINT},
       </if>
       <if test="showImgUrls != null">
         #{showImgUrls,jdbcType=LONGVARCHAR},
@@ -249,6 +256,9 @@
       <if test="record.newsTop != null">
         news_top = #{record.newsTop,jdbcType=BIT},
       </if>
+      <if test="record.newsCreateTime != null">
+        news_create_time = #{record.newsCreateTime,jdbcType=BIGINT},
+      </if>
       <if test="record.showImgUrls != null">
         show_img_urls = #{record.showImgUrls,jdbcType=LONGVARCHAR},
       </if>
@@ -268,6 +278,7 @@
       has_video = #{record.hasVideo,jdbcType=BIT},
       recommend = #{record.recommend,jdbcType=BIT},
       news_top = #{record.newsTop,jdbcType=BIT},
+      news_create_time = #{record.newsCreateTime,jdbcType=BIGINT},
       show_img_urls = #{record.showImgUrls,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -283,7 +294,8 @@
       show_img_count = #{record.showImgCount,jdbcType=INTEGER},
       has_video = #{record.hasVideo,jdbcType=BIT},
       recommend = #{record.recommend,jdbcType=BIT},
-      news_top = #{record.newsTop,jdbcType=BIT}
+      news_top = #{record.newsTop,jdbcType=BIT},
+      news_create_time = #{record.newsCreateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -315,6 +327,9 @@
       <if test="newsTop != null">
         news_top = #{newsTop,jdbcType=BIT},
       </if>
+      <if test="newsCreateTime != null">
+        news_create_time = #{newsCreateTime,jdbcType=BIGINT},
+      </if>
       <if test="showImgUrls != null">
         show_img_urls = #{showImgUrls,jdbcType=LONGVARCHAR},
       </if>
@@ -331,6 +346,7 @@
       has_video = #{hasVideo,jdbcType=BIT},
       recommend = #{recommend,jdbcType=BIT},
       news_top = #{newsTop,jdbcType=BIT},
+      news_create_time = #{newsCreateTime,jdbcType=BIGINT},
       show_img_urls = #{showImgUrls,jdbcType=LONGVARCHAR}
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
@@ -343,7 +359,8 @@
       show_img_count = #{showImgCount,jdbcType=INTEGER},
       has_video = #{hasVideo,jdbcType=BIT},
       recommend = #{recommend,jdbcType=BIT},
-      news_top = #{newsTop,jdbcType=BIT}
+      news_top = #{newsTop,jdbcType=BIT},
+      news_create_time = #{newsCreateTime,jdbcType=BIGINT}
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
 </mapper>

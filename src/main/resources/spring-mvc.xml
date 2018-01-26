@@ -37,7 +37,7 @@ c:xml,json的默认读写支持-->
     <mvc:default-servlet-handler/>
 
     <!--扫描web相关的bean-->
-    <context:component-scan base-package="cn.sqm.beginning.controller">
+    <context:component-scan base-package="com.mindnode.immipal.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -56,7 +56,7 @@ c:xml,json的默认读写支持-->
     <mvc:interceptors>
     <mvc:interceptor>
     <mvc:mapping path="/admin/*"/>
-    <bean class="cn.sqm.begin.interceptor.PermissionInterceptor"/>
+    <bean class="com.mindnode.immipal.interceptor.PermissionInterceptor"/>
     </mvc:interceptor>
     </mvc:interceptors>
 </beans>
