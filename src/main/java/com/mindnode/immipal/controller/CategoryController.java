@@ -1,5 +1,9 @@
 package com.mindnode.immipal.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,31 +32,68 @@ public class CategoryController {
      * 栏目分类管理页面
      */
     @RequestMapping(value = "/admin_category_list", method = RequestMethod.GET)
-    public String listCategory(Model model) {
-        List<Category> categoryList = categoryService.listAll();
-        model.addAttribute("categoryList", categoryList);
+    public String listCategory(Integer pageNum, Model model) {
+        //在你需要进行分页的 MyBatis 查询方法前调用 PageHelper.startPage 静态方法即可，
+        //紧跟在这个方法后的第一个MyBatis 查询方法会被进行分页。
+        final int pageSize = 2;
+
+        if (pageNum==null) {
+            PageHelper.startPage(1, pageSize);
+        } else {
+            PageHelper.startPage(pageNum, pageSize);
+        }
+        List<Category> categoryList = null;
+        try {
+            categoryList = categoryService.listAll();
+        } catch (NullListException e) {
+            model.addAttribute("message", e.getMessage());
+        }
+
+            model.addAttribute("categoryList", categoryList);
+            PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
+            model.addAttribute("pageInfo", pageInfo);
+
         return "admin/listCategory";
     }
 
     /**
-     * 显示全部新闻列表
-     * 新闻列表管理页面
+     * 新增栏目
      */
-    @RequestMapping(value = "/admin_news_list", method = RequestMethod.GET)
-    public String listNews(Model model) {
-        List<Category> categoryList = categoryService.listAll();
-        model.addAttribute("categoryList", categoryList);
-        return "admin/listNews";
+    @RequestMapping(value = "/admin_category_add", method = RequestMethod.POST)
+    public String addCategory(Category category) {
+        categoryService.add(category);
+        return "redirect:/admin/admin_category_list";
+
     }
 
     /**
-     * 显示全部广告列表
-     * 广告管理页面
+     * 编辑栏目的页面
      */
-    @RequestMapping(value = "/admin_ad_list", method = RequestMethod.GET)
-    public String listAd(Model model) {
-        List<Category> categoryList = categoryService.listAll();
-        model.addAttribute("categoryList", categoryList);
-        return "admin/listAd";
+    @RequestMapping(value = "/admin_category_edit_page", method = RequestMethod.GET)
+    public String editCategoryPage(Integer categoryId, Model model) {
+        try {
+            model.addAttribute("category", categoryService.get(categoryId));
+        } catch (NullObjectException e) {
+            model.addAttribute("message", e.getMessage());
+        }
+        return "admin/edit/editCategory";
+    }
+
+    /**
+     * 编辑栏目
+     */
+    @RequestMapping(value = "/admin_category_edit", method = RequestMethod.POST)
+    public String editCategory(Category category) {
+        categoryService.update(category);
+        return "redirect:/admin/admin_category_list";
+    }
+
+    /**
+     * 删除栏目
+     */
+    @RequestMapping(value = "/admin_category_delete", method = RequestMethod.GET)
+    public String deleteCategory(Integer categoryId) {
+        categoryService.delete(categoryId);
+        return "redirect:/admin/admin_category_list";
     }
 }

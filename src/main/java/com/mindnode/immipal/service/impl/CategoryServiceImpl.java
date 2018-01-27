@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service.impl;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.mapper.CategoryMapper;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.pojo.CategoryExample;
@@ -15,7 +17,7 @@ import java.util.List;
  * @date 2018/1/26
  */
 @Service
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl implements CategoryService  {
     @Autowired
     CategoryMapper categoryMapper;
 
@@ -35,19 +37,31 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category get(int categoryId) {
-        return categoryMapper.selectByPrimaryKey(categoryId);
+    public Category get(int categoryId) throws NullObjectException {
+        Category category = categoryMapper.selectByPrimaryKey(categoryId);
+        if (category == null) {
+            throw new NullObjectException("无此栏目");
+        }
+        return category;
     }
 
     @Override
-    public List<Category> listAll() {
-        return categoryMapper.selectByExample(new CategoryExample());
+    public List<Category> listAll() throws NullListException {
+        List<Category> categoryList = categoryMapper.selectByExample(new CategoryExample());
+        if (categoryList == null) {
+            throw new NullListException("此栏目列表为空");
+        }
+        return categoryList;
     }
 
     @Override
-    public List<Category> listAllOrderByLevel() {
+    public List<Category> listAllOrderByLevel() throws NullListException{
         CategoryExample example = new CategoryExample();
-        example.setOrderByClause("ad_level");
-        return categoryMapper.selectByExample(example);
+        example.setOrderByClause("category_level");
+        List<Category> categoryList = categoryMapper.selectByExample(example);
+        if (categoryList == null) {
+            throw new NullListException("此栏目列表为空");
+        }
+        return categoryList;
     }
 }

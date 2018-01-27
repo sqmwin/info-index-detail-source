@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.exception.user.ChangePasswordException;
 import com.mindnode.immipal.exception.user.WrongUserInformationException;
 import com.mindnode.immipal.pojo.User;
@@ -22,11 +24,11 @@ public interface UserService {
 
     void update(User user);
 
-    User get(int userId);
+    User get(int userId) throws NullObjectException;
 
-    User getByUsername(String username);
+    User getByUsername(String username) throws NullObjectException;
 
-    List<User> listAll();
+    List<User> listAll() throws NullListException;
 
-    List<User> listExceptAdmin();
+    List<User> listExceptAdmin() throws NullListException;
 }

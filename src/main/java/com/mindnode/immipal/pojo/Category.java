@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Category implements Serializable {
     private Integer categoryId;
 
-    private String categorytitle;
+    private String categoryTitle;
 
     private Integer categoryLevel;
 
@@ -22,12 +22,12 @@ public class Category implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public String getCategorytitle() {
-        return categorytitle;
+    public String getCategoryTitle() {
+        return categoryTitle;
     }
 
-    public void setCategorytitle(String categorytitle) {
-        this.categorytitle = categorytitle;
+    public void setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
     }
 
     public Integer getCategoryLevel() {
@@ -51,7 +51,7 @@ public class Category implements Serializable {
         }
         Category other = (Category) that;
         return (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
-            && (this.getCategorytitle() == null ? other.getCategorytitle() == null : this.getCategorytitle().equals(other.getCategorytitle()))
+            && (this.getCategoryTitle() == null ? other.getCategoryTitle() == null : this.getCategoryTitle().equals(other.getCategoryTitle()))
             && (this.getCategoryLevel() == null ? other.getCategoryLevel() == null : this.getCategoryLevel().equals(other.getCategoryLevel()));
     }
 
@@ -60,7 +60,7 @@ public class Category implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
-        result = prime * result + ((getCategorytitle() == null) ? 0 : getCategorytitle().hashCode());
+        result = prime * result + ((getCategoryTitle() == null) ? 0 : getCategoryTitle().hashCode());
         result = prime * result + ((getCategoryLevel() == null) ? 0 : getCategoryLevel().hashCode());
         return result;
     }
@@ -72,7 +72,7 @@ public class Category implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", categoryId=").append(categoryId);
-        sb.append(", categorytitle=").append(categorytitle);
+        sb.append(", categoryTitle=").append(categoryTitle);
         sb.append(", categoryLevel=").append(categoryLevel);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

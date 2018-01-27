@@ -62,7 +62,7 @@
 
     <!--注册mybatis的sessionFactory-->
     <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
-        <property name="typeAliasesPackage" value="cn.bsed.pojo"/>
+        <property name="typeAliasesPackage" value="com.mindnode.immipal.pojo"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
 

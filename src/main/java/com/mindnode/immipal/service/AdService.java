@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Ad;
 
 import java.util.List;
@@ -16,14 +18,15 @@ public interface AdService {
 
     void update(Ad ad);
 
-    Ad get(int adId);
+    Ad get(int adId) throws NullObjectException;
 
-    Ad getFirstByAdLevel(int adLevel);
+    /**根据广告等级返回，每个等级只能有一条广告*/
+    Ad getFirstByAdLevel(int adLevel) throws NullObjectException,NullListException;
 
-    List<Ad> listByAdLevel(int adLevel);
+    List<Ad> listByAdLevel(int adLevel) throws NullListException;
 
-    List<Ad> listAll();
+    List<Ad> listAll() throws NullListException;
 
     /**根据ad_level值从小到大排序*/
-    List<Ad> listAllOrderByLevel();
+    List<Ad> listAllOrderByLevel() throws NullListException;
 }

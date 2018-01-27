@@ -1,5 +1,7 @@
 import com.alibaba.fastjson.JSON;
 import com.mindnode.immipal.pojo.Category;
+import com.mindnode.immipal.util.date.TimeUtil;
+import com.mindnode.immipal.util.upload.FileUpLoad;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,15 +26,15 @@ public class SomeTest {
         List<Category> categoryList = new ArrayList<>();
         Category category1 = new Category();
         category1.setCategoryId(1);
-        category1.setCategorytitle("a");
+        category1.setCategoryTitle("a");
 
         Category category2 = new Category();
         category2.setCategoryId(2);
-        category2.setCategorytitle("b");
+        category2.setCategoryTitle("b");
 
         Category category3 = new Category();
         category3.setCategoryId(3);
-        category3.setCategorytitle("c");
+        category3.setCategoryTitle("c");
         categoryList.add(category1);
         categoryList.add(category2);
         categoryList.add(category3);
@@ -54,6 +56,23 @@ public class SomeTest {
         Map categoryMapJson = (Map) JSON.parse(jsonMapString);
         System.out.println(categoryMapJson);
         System.out.println();
+    }
+
+    @Test
+    public void dateTest() {
+        System.out.println(TimeUtil.toLocalString(System.currentTimeMillis()));
+    }
+
+    @Test
+    public void methodTest() {
+        FileUpLoad fileUpLoad = new FileUpLoad();
+        final String[] picEnd = {".jpg",".gif",".png"};
+        final String[] videoEnd = {".mp4",".flv",".avi",".mpg",".rm",".wav"};
+        String originalName = "1.png";
+        String suffix = fileUpLoad.contain(picEnd, originalName);
+        System.out.println("-----");
+        System.out.println(suffix == null ? fileUpLoad.contain(videoEnd, originalName):suffix);
+
     }
 
 }

@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Category;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  * @date 2018/1/26
  */
 
-public interface CategoryService {
+public interface CategoryService  {
 
     void add(Category category);
 
@@ -18,10 +20,10 @@ public interface CategoryService {
 
     void update(Category category);
 
-    Category get(int categoryId);
+    Category get(int categoryId) throws NullObjectException;
 
-    List<Category> listAll();
+    List<Category> listAll() throws NullListException;
 
     /**排序方式：根据category_level从小到大排序*/
-    List<Category> listAllOrderByLevel();
+    List<Category> listAllOrderByLevel() throws NullListException;
 }

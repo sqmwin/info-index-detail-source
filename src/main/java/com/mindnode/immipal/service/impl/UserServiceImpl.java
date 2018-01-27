@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service.impl;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.exception.user.ChangePasswordException;
 import com.mindnode.immipal.exception.user.WrongUserInformationException;
 import com.mindnode.immipal.mapper.UserMapper;
@@ -104,26 +106,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User get(int userId) {
-        return userMapper.selectByPrimaryKey(userId);
+    public User get(int userId) throws NullObjectException {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            throw new NullObjectException("未获取到此用户");
+        }
+        return user;
     }
 
     @Override
-    public User getByUsername(String username) {
+    public User getByUsername(String username) throws NullObjectException{
         UserExample example = new UserExample();
         example.createCriteria().andUserUsernameEqualTo(username);
-        return userMapper.selectByExample(example).get(0);
+        User user = userMapper.selectByExample(example).get(0);
+        if (user == null) {
+            throw new NullObjectException("未获取到此用户");
+        }
+        return user;
     }
 
     @Override
-    public List<User> listAll() {
-        return userMapper.selectByExample(new UserExample());
+    public List<User> listAll() throws NullListException {
+        List<User> userList = userMapper.selectByExample(new UserExample());
+        if (userList == null) {
+            throw new NullListException("此用户列表为空");
+        }
+        return userList;
     }
 
     @Override
-    public List<User> listExceptAdmin() {
+    public List<User> listExceptAdmin() throws NullListException {
         UserExample example = new UserExample();
         example.createCriteria().andUserUsernameNotEqualTo("admin");
-        return userMapper.selectByExample(example);
+        List<User> userList = userMapper.selectByExample(example);
+        if (userList == null) {
+            throw new NullListException("此用户列表为空");
+        }
+        return userList;
     }
 }

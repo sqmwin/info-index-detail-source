@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mindnode.immipal.exception.list.NullListException;
 import com.mindnode.immipal.pojo.Ad;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.pojo.News;
@@ -32,6 +33,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("")
 public class InformationController {
+    private final int PAGE_SIZE = 10;
     @Autowired
     NewsService newsService;
     @Autowired
@@ -44,9 +46,15 @@ public class InformationController {
      */
     @RequestMapping(value = "/navigator", method = RequestMethod.GET)
     public String navigator() {
-        List<Category> categoryList = categoryService.listAllOrderByLevel();
 
         Map<String, Object> data = new HashMap<>(2);
+
+        List<Category> categoryList = null;
+        try {
+            categoryList = categoryService.listAllOrderByLevel();
+        } catch (NullListException e) {
+            data.put("message", e.getMessage());
+        }
 
         data.put("categoryList", categoryList);
 
@@ -62,10 +70,20 @@ public class InformationController {
                         @RequestParam("adLevel")Integer adLevel) {
         Map<String, Object> data = new HashMap<>(4);
 
-        Ad ad = adService.getFirstByAdLevel(adLevel);
+        Ad ad = null;
+        try {
+            ad = adService.getFirstByAdLevel(adLevel);
+        } catch (Exception e) {
+            data.put("message", e.getMessage());
+        }
 
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
-        List<News> newsList = newsService.listByRecommend();
+        List<News> newsList = null;
+        try {
+            newsList = newsService.listByRecommend();
+        } catch (NullListException e) {
+            data.put("message", e.getMessage());
+        }
 
         data.put("ad", ad);
         data.put("newsList", newsList);
@@ -82,10 +100,20 @@ public class InformationController {
                          @RequestParam("adLevel")Integer adLevel) {
         Map<String, Object> data = new HashMap<>(4);
 
-        Ad ad = adService.getFirstByAdLevel(adLevel);
+        Ad ad = null;
+        try {
+            ad = adService.getFirstByAdLevel(adLevel);
+        } catch (Exception e) {
+            data.put("message", e.getMessage());
+        }
 
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
-        List<News> newsList = newsService.listAllOrderByCreateTime();
+        List<News> newsList = null;
+        try {
+            newsList = newsService.listAllOrderByCreateTime();
+        } catch (NullListException e) {
+            data.put("message", e.getMessage());
+        }
 
         data.put("ad", ad);
         data.put("newsList", newsList);
@@ -104,10 +132,20 @@ public class InformationController {
 
         Map<String, Object> data = new HashMap<>(4);
 
-        Ad ad = adService.getFirstByAdLevel(adLevel);
+        Ad ad = null;
+        try {
+            ad = adService.getFirstByAdLevel(adLevel);
+        } catch (Exception e) {
+            data.put("message", e.getMessage());
+        }
 
         PageHelper.startPage(page.getPageNum(), page.getPageSize());
-        List<News> newsList = newsService.listByCategoryId(categoryId);
+        List<News> newsList = null;
+        try {
+            newsList = newsService.listByCategoryId(categoryId);
+        } catch (NullListException e) {
+            data.put("message", e.getMessage());
+        }
 
         int total = (int) new PageInfo<>(newsList).getTotal();
         page.setTotal(total);

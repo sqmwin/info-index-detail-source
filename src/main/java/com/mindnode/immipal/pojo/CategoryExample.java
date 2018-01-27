@@ -184,73 +184,73 @@ public class CategoryExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleIsNull() {
-            addCriterion("categoryTitle is null");
+        public Criteria andCategoryTitleIsNull() {
+            addCriterion("category_title is null");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleIsNotNull() {
-            addCriterion("categoryTitle is not null");
+        public Criteria andCategoryTitleIsNotNull() {
+            addCriterion("category_title is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleEqualTo(String value) {
-            addCriterion("categoryTitle =", value, "categorytitle");
+        public Criteria andCategoryTitleEqualTo(String value) {
+            addCriterion("category_title =", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleNotEqualTo(String value) {
-            addCriterion("categoryTitle <>", value, "categorytitle");
+        public Criteria andCategoryTitleNotEqualTo(String value) {
+            addCriterion("category_title <>", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleGreaterThan(String value) {
-            addCriterion("categoryTitle >", value, "categorytitle");
+        public Criteria andCategoryTitleGreaterThan(String value) {
+            addCriterion("category_title >", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleGreaterThanOrEqualTo(String value) {
-            addCriterion("categoryTitle >=", value, "categorytitle");
+        public Criteria andCategoryTitleGreaterThanOrEqualTo(String value) {
+            addCriterion("category_title >=", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleLessThan(String value) {
-            addCriterion("categoryTitle <", value, "categorytitle");
+        public Criteria andCategoryTitleLessThan(String value) {
+            addCriterion("category_title <", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleLessThanOrEqualTo(String value) {
-            addCriterion("categoryTitle <=", value, "categorytitle");
+        public Criteria andCategoryTitleLessThanOrEqualTo(String value) {
+            addCriterion("category_title <=", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleLike(String value) {
-            addCriterion("categoryTitle like", value, "categorytitle");
+        public Criteria andCategoryTitleLike(String value) {
+            addCriterion("category_title like", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleNotLike(String value) {
-            addCriterion("categoryTitle not like", value, "categorytitle");
+        public Criteria andCategoryTitleNotLike(String value) {
+            addCriterion("category_title not like", value, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleIn(List<String> values) {
-            addCriterion("categoryTitle in", values, "categorytitle");
+        public Criteria andCategoryTitleIn(List<String> values) {
+            addCriterion("category_title in", values, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleNotIn(List<String> values) {
-            addCriterion("categoryTitle not in", values, "categorytitle");
+        public Criteria andCategoryTitleNotIn(List<String> values) {
+            addCriterion("category_title not in", values, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleBetween(String value1, String value2) {
-            addCriterion("categoryTitle between", value1, value2, "categorytitle");
+        public Criteria andCategoryTitleBetween(String value1, String value2) {
+            addCriterion("category_title between", value1, value2, "categoryTitle");
             return (Criteria) this;
         }
 
-        public Criteria andCategorytitleNotBetween(String value1, String value2) {
-            addCriterion("categoryTitle not between", value1, value2, "categorytitle");
+        public Criteria andCategoryTitleNotBetween(String value1, String value2) {
+            addCriterion("category_title not between", value1, value2, "categoryTitle");
             return (Criteria) this;
         }
 

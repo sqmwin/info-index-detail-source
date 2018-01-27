@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service.impl;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.mapper.AdMapper;
 import com.mindnode.immipal.pojo.Ad;
 import com.mindnode.immipal.pojo.AdExample;
@@ -35,31 +37,52 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Ad get(int adId) {
-        return adMapper.selectByPrimaryKey(adId);
+    public Ad get(int adId) throws NullObjectException {
+        Ad ad = adMapper.selectByPrimaryKey(adId);
+        if (ad == null) {
+            throw new NullObjectException("无此广告");
+        }
+        return ad;
     }
 
     @Override
-    public Ad getFirstByAdLevel(int adLevel) {
-        return listByAdLevel(adLevel).get(0);
+    public Ad getFirstByAdLevel(int adLevel) throws NullObjectException,NullListException{
+        Ad ad = listByAdLevel(adLevel).get(0);
+        if (ad == null) {
+            throw new NullObjectException("无此广告");
+        }
+        return ad;
     }
 
     @Override
-    public List<Ad> listByAdLevel(int adLevel) {
+    public List<Ad> listByAdLevel(int adLevel) throws NullListException{
         AdExample example = new AdExample();
         example.createCriteria().andAdLevelEqualTo(adLevel);
-        return adMapper.selectByExample(example);
+        List<Ad> adList = adMapper.selectByExample(example);
+        if (adList == null) {
+            throw new NullListException("此广告列表为空");
+        }
+        return adList;
     }
 
     @Override
-    public List<Ad> listAll() {
-        return adMapper.selectByExample(new AdExample());
+    public List<Ad> listAll() throws NullListException {
+        List<Ad> adList = adMapper.selectByExample(new AdExample());
+        if (adList == null) {
+            throw new NullListException("此广告列表为空");
+        }
+        return adList;
     }
 
     @Override
-    public List<Ad> listAllOrderByLevel() {
+    public List<Ad> listAllOrderByLevel() throws NullListException {
+
         AdExample example = new AdExample();
         example.setOrderByClause("ad_level");
-        return adMapper.selectByExample(example);
+        List<Ad> adList = adMapper.selectByExample(example);
+        if (adList == null) {
+            throw new NullListException("此广告列表为空");
+        }
+        return adList;
     }
 }

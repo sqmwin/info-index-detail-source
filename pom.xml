@@ -36,7 +36,7 @@
         <druid.version>1.1.6</druid.version>
 
         <standard.version>1.1.2</standard.version>
-        <jstl.version>1.2</jstl.version>
+        <jstl.version>1.0</jstl.version>
         <servlet.version>3.0.1</servlet.version>
         <jsp.version>2.2</jsp.version>
 

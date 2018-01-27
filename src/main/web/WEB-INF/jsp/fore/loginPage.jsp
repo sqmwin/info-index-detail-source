@@ -12,25 +12,46 @@
 
 <%@include file="../include/head/head-bottom.jsp"%>
 
-<%@include file="../include/body/body-top.jsp"%>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"><b>后台管理系统</b></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg"><b>登陆</b></p>
 
-<form action="${pageContext.request.contextPath}/admin/admin_user_login" method="post">
-    <table>
-        <tr>
-            <td>用户名</td>
-            <td><input type="text" name="userUsername"></td>
-        </tr>
-        <tr>
-            <td>密码</td>
-            <td><input type="password" name="userPassword"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="登陆"></td>
-        </tr>
-        <tr>
-            <td>${message}</td>
-        </tr>
-    </table>
-</form>
+        <form action="${pageContext.request.contextPath}/admin/admin_user_login/" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" placeholder="登录名" name="userUsername">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" placeholder="密码" name="userPassword">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <b>${message}</b>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">登陆</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <!-- /.social-auth-links -->
+        <%--<a href="#">忘记密码</a><br>--%>
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
 
-<%@include file="../include/body/body-bottom.jsp"%>
+<!-- jQuery 3 -->
+<script src="${pageContext.request.contextPath}/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="${pageContext.request.contextPath}/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="${pageContext.request.contextPath}/plugins/iCheck/icheck.min.js"></script>
+</body>

@@ -1,5 +1,7 @@
 package com.mindnode.immipal.service;
 
+import com.mindnode.immipal.exception.list.NullListException;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.News;
 
 import java.util.List;
@@ -25,26 +27,26 @@ public interface NewsService {
     /**
      * 根据newsId返回News对象
      */
-    News getByNewsId(int newsId);
+    News getByNewsId(int newsId) throws NullObjectException;
 
     /**
      * 返回全部新闻，通过时间long值从大到小排序
      */
-    List<News> listAll();
+    List<News> listAll() throws NullListException;
 
     /**
      * 返回所有新闻，通过时间long值从大到小排序
      */
-    List<News> listAllOrderByCreateTime();
+    List<News> listAllOrderByCreateTime() throws NullListException;
 
     /**
      * 返回推荐列表，通过时间long值从大到小排序
      */
-    List<News> listByRecommend();
+    List<News> listByRecommend() throws NullListException;
 
     /**
      * 通过分类id返回新闻列表，通过时间long值从大到小排序
      */
-    List<News> listByCategoryId(int categoryId);
+    List<News> listByCategoryId(int categoryId) throws NullListException;
 
 }
