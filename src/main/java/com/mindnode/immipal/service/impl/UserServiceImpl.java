@@ -24,7 +24,9 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public void login(String username, String password) throws WrongUserInformationException{
+    public void login(User user) throws WrongUserInformationException {
+        String username = user.getUserUsername();
+        String password = user.getUserPassword();
         if (username == null || username.equals(EMPTY)) {
             throw new WrongUserInformationException("用户名不能为空");
         }
@@ -36,6 +38,9 @@ public class UserServiceImpl implements UserService {
         for (User userInDataBase : users) {
             if (!(username.equals(userInDataBase.getUserUsername()) && password2MD5Code.equals(userInDataBase.getUserPassword()))) {
                 throw new WrongUserInformationException("用户名或密码错误");
+            }
+            if (username.equals(userInDataBase.getUserUsername()) && password2MD5Code.equals(userInDataBase.getUserPassword())) {
+                return;
             }
         }
     }

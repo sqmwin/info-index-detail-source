@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2018/1/26
  */
 public interface UserService {
-    void login(String username, String password) throws WrongUserInformationException;
+    void login(User user) throws WrongUserInformationException;
 
     void updatePassword(int id, String password, String ensure) throws ChangePasswordException;
 

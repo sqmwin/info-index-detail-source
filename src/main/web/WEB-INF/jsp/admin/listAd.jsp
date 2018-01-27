@@ -1,15 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: songqiming
-  Date: 2018/1/22
-  Time: 14:29
+  Date: 2018/1/26
+  Time: 17:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 
 <%@include file="../include/head/head-top.jsp"%>
 
-    <title>403：http禁止访问</title>
+    <title>广告管理页面</title>
 
 <%@include file="../include/head/head-bottom.jsp"%>
 
@@ -18,5 +18,5 @@
 <!--------------------------
 | Your Page Content Here |
 -------------------------->
-
+ad
 <%@include file="../include/body/body-bottom.jsp"%>

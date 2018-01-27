@@ -11,7 +11,7 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd
-       http://www.springframewor0k.org/schema/context
+       http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -52,11 +52,11 @@ c:xml,json的默认读写支持-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
           p:defaultEncoding="UTF-8"/>
 
-    权限拦截器
+    <!--权限拦截器-->
     <mvc:interceptors>
-    <mvc:interceptor>
-    <mvc:mapping path="/admin/*"/>
-    <bean class="com.mindnode.immipal.interceptor.PermissionInterceptor"/>
-    </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/*"/>
+            <bean class="com.mindnode.immipal.interceptor.PermissionInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 </beans>

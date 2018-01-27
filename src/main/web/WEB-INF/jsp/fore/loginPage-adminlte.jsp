@@ -6,9 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+
+
 <%@include file="../include/head/head-top.jsp"%>
 
-<title>后台管理登陆页</title>
+    <title>后台管理登陆页</title>
 
 <%@include file="../include/head/head-bottom.jsp"%>
 
@@ -18,11 +20,11 @@
     <table>
         <tr>
             <td>用户名</td>
-            <td><input type="text" name="userUsername"></td>
+            <td><input type="text" name="username" id="username"></td>
         </tr>
         <tr>
             <td>密码</td>
-            <td><input type="password" name="userPassword"></td>
+            <td><input type="password" name="password" id="password"></td>
         </tr>
         <tr>
             <td><input type="submit" value="登陆"></td>
