@@ -1,6 +1,7 @@
 package com.mindnode.immipal.pojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdExample {
@@ -511,6 +512,66 @@ public class AdExample {
 
         public Criteria andAdLevelNotBetween(Integer value1, Integer value2) {
             addCriterion("ad_level not between", value1, value2, "adLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateIsNull() {
+            addCriterion("ad_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateIsNotNull() {
+            addCriterion("ad_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateEqualTo(Date value) {
+            addCriterion("ad_date =", value, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateNotEqualTo(Date value) {
+            addCriterion("ad_date <>", value, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateGreaterThan(Date value) {
+            addCriterion("ad_date >", value, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("ad_date >=", value, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateLessThan(Date value) {
+            addCriterion("ad_date <", value, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateLessThanOrEqualTo(Date value) {
+            addCriterion("ad_date <=", value, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateIn(List<Date> values) {
+            addCriterion("ad_date in", values, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateNotIn(List<Date> values) {
+            addCriterion("ad_date not in", values, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateBetween(Date value1, Date value2) {
+            addCriterion("ad_date between", value1, value2, "adDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andAdDateNotBetween(Date value1, Date value2) {
+            addCriterion("ad_date not between", value1, value2, "adDate");
             return (Criteria) this;
         }
     }

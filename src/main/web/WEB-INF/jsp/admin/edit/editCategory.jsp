@@ -20,72 +20,66 @@
 | Your Page Content Here |
 -------------------------->
 <!-- Horizontal Form -->
-<div class="box box-info">
-    <div class="box-header with-border">
-        <h3 class="box-title">编辑此栏目。。。</h3>
+<div class="col-md-8">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">编辑栏目</h3>
+            <h3 class="box-title alert-message">${message}</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_category_edit">
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="categoryId" class="col-sm-3 control-label">导航条栏目ID</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="categoryId" placeholder="导航条栏目ID" disabled value="${category.categoryId}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="categoryTitle" class="col-sm-3 control-label">导航条栏目标题</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" placeholder="导航条栏目标题" maxlength="8" value="${category.categoryTitle}">
+                    </div>
+                </div>
+                <!-- select -->
+                <div class="form-group">
+                    <label for="categoryLevel" class="col-sm-3 control-label">导航条栏目等级</label>
+                    <div class="col-sm-6">
+                        <select class="form-control " id="categoryLevel" name="categoryLevel">
+                            <option value="1" <c:if test="${category.categoryLevel == 1}"> selected </c:if>>1</option>
+                            <option value="2" <c:if test="${category.categoryLevel == 2}"> selected </c:if>>2</option>
+                            <option value="3" <c:if test="${category.categoryLevel == 3}"> selected </c:if>>3</option>
+                            <option value="4" <c:if test="${category.categoryLevel == 4}"> selected </c:if>>4</option>
+                            <option value="5" <c:if test="${category.categoryLevel == 5}"> selected </c:if>>5</option>
+                            <option value="6" <c:if test="${category.categoryLevel == 6}"> selected </c:if>>6</option>
+                            <option value="7" <c:if test="${category.categoryLevel == 7}"> selected </c:if>>7</option>
+                            <option value="8" <c:if test="${category.categoryLevel == 8}"> selected </c:if>>8</option>
+                            <option value="9" <c:if test="${category.categoryLevel == 9}"> selected </c:if>>9</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <div class="col-sm-12 help-block">导航条栏目等级：1为最大，9为最小，等级越高在资讯页的排列越靠前</div>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+
+                <button type="submit" class="btn btn-info pull-right">提交修改</button>
+                <input type="hidden" name="categoryId" value="${category.categoryId}">
+
+        </form>
+                <button onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_list'" class="btn btn-default">取消修改</button>
+            </div>
+            <!-- /.box-footer -->
+
     </div>
-    <!-- /.box-header -->
-    <!-- form start -->
-    <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_category_edit">
-        <div class="box-body">
-            <div class="form-group">
-                <label for="categoryId" class="col-sm-2 control-label">导航条栏目ID</label>
-                <div class="col-sm-8">
-                    <input type="number" class="form-control" id="categoryId" placeholder="导航条栏目ID" disabled value="${category.categoryId}">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="categoryTitle" class="col-sm-2 control-label">导航条栏目标题</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" id="categoryTitle" name="categoryTitle" placeholder="Password" maxlength="8" value="${category.categoryTitle}">
-                </div>
-            </div>
-            <!-- select -->
-            <div class="form-group">
-                <label for="categoryLevel" class="col-sm-2 control-label">导航条栏目等级</label>
-                <select class="form-control" id="categoryLevel" name="categoryLevel">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                </select>
-            </div>
-            <!-- radio -->
-            <div class="form-group">
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                        Option one is this and that&mdash;be sure to include why it's great
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                        Option two can be something else and selecting it will deselect option one
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-sm-8"><b>导航条栏目等级：1为最大，9为最小，等级越高在资讯页的排列越靠前</b></div>
-            </div>
-
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            <button onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_list'" class="btn btn-default">取消修改</button>
-            <button type="submit" class="btn btn-info pull-right">提交修改</button>
-
-            <input type="hidden" name="categoryId"value="${category.categoryId}">
-        </div>
-        <!-- /.box-footer -->
-    </form>
+    <!-- /.box -->
 </div>
-<!-- /.box -->
+
+<%@include file="../../include/body/body-message.jsp"%>
 
 <%@include file="../../include/body/body-bottom.jsp"%>

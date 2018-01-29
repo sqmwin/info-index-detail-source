@@ -40,4 +40,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <%--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>--%>
     <%--baomitu的cdn--%>
     <script src="http://lib.baomitu.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <style type="text/css">
+        .alert-message {
+            color: red;
+        }
+
+        .td-small {
+
+        }
+
+        .td-normal {
+
+        }
+
+        .td-large {
+
+        }
+    </style>
     <![endif]-->

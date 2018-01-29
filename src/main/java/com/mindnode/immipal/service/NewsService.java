@@ -30,6 +30,11 @@ public interface NewsService {
     News getByNewsId(int newsId) throws NullObjectException;
 
     /**
+     * 根据newsTop为true且指定categoryId中的news对象
+     */
+    List<News> listByNewsTopTrueAndCategoryId(int categoryId);
+
+    /**
      * 返回全部新闻，通过时间long值从大到小排序
      */
     List<News> listAll() throws NullListException;

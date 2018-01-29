@@ -35,7 +35,7 @@ public class CategoryController {
     public String listCategory(Integer pageNum, Model model) {
         //在你需要进行分页的 MyBatis 查询方法前调用 PageHelper.startPage 静态方法即可，
         //紧跟在这个方法后的第一个MyBatis 查询方法会被进行分页。
-        final int pageSize = 2;
+        final int pageSize = 10;
 
         if (pageNum==null) {
             PageHelper.startPage(1, pageSize);
@@ -49,9 +49,10 @@ public class CategoryController {
             model.addAttribute("message", e.getMessage());
         }
 
-            model.addAttribute("categoryList", categoryList);
-            PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
-            model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("categoryList", categoryList);
+
+        PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
+        model.addAttribute("pageInfo", pageInfo);
 
         return "admin/listCategory";
     }
@@ -60,7 +61,12 @@ public class CategoryController {
      * 新增栏目
      */
     @RequestMapping(value = "/admin_category_add", method = RequestMethod.POST)
-    public String addCategory(Category category) {
+    public String addCategory(Category category,Model model) {
+        String nothing = "";
+        if (category.getCategoryTitle().equals(nothing)) {
+            model.addAttribute("message", "栏目名不能为空");
+            return "redirect:/admin/admin_category_list";
+        }
         categoryService.add(category);
         return "redirect:/admin/admin_category_list";
 

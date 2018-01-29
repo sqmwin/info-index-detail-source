@@ -1,7 +1,6 @@
 import com.alibaba.fastjson.JSON;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.util.date.TimeUtil;
-import com.mindnode.immipal.util.upload.FileUpLoad;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -63,16 +62,5 @@ public class SomeTest {
         System.out.println(TimeUtil.toLocalString(System.currentTimeMillis()));
     }
 
-    @Test
-    public void methodTest() {
-        FileUpLoad fileUpLoad = new FileUpLoad();
-        final String[] picEnd = {".jpg",".gif",".png"};
-        final String[] videoEnd = {".mp4",".flv",".avi",".mpg",".rm",".wav"};
-        String originalName = "1.png";
-        String suffix = fileUpLoad.contain(picEnd, originalName);
-        System.out.println("-----");
-        System.out.println(suffix == null ? fileUpLoad.contain(videoEnd, originalName):suffix);
-
-    }
 
 }

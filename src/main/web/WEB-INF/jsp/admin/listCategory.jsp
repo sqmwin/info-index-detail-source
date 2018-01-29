@@ -20,66 +20,63 @@
 | Your Page Content Here |
 -------------------------->
 
-<div class="box">
-    <div class="box-header">
-        <h3 class="box-title">栏目分类管理</h3>
+<div class="col-md-8">
+    <div class="box box-solid box-primary">
+        <div class="box-header">
+            <h3 class="box-title pull-left mid">栏目分类管理</h3>
+        </div>
     </div>
-    <!-- /.box-header -->
+</div>
 
-    <div class="box-body">
-        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-            <div class="row">
-                <div class="col-sm-6"></div>
-                <div class="col-sm-6"></div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
-                        <thead>
-                        <tr role="row">
-                            <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="导航条栏目ID: activate to sort column descending">
-                                导航条栏目ID
-                            </th>
-                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="导航条栏目标题: activate to sort column ascending">
-                                导航条栏目标题
-                            </th>
-                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
-                                导航条等级
-                            </th>
-                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
-                                编辑导航条
-                            </th>
-                            <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
-                                删除导航条
-                            </th>
-                        </tr>
-                        </thead>
+<%@include file="../include/body/body-message.jsp"%>
 
-                        <tbody>
+<div class="col-md-8">
+    <div class="box box-info">
+        <div class="box-body">
+            <div id="wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="table" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-sort="ascending" aria-label="导航条栏目ID: activate to sort column descending">
+                                    导航条栏目ID
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条栏目标题: activate to sort column ascending">
+                                    导航条栏目标题
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
+                                    导航条栏目等级
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
+                                    导航条栏目操作
+                                </th>
+                            </tr>
+                            </thead>
 
-                        <c:forEach items="${categoryList}" var="c">
-                        <tr role="row">
-                            <td class="sorting_1">${c.categoryId}</td>
-                            <td>${c.categoryTitle}</td>
-                            <td>${c.categoryLevel}</td>
-                            <td>
-                                <button class="btn btn-info pull-left" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_edit_page?categoryId=${c.categoryId}'">编辑此栏目</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-info pull-left" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_delete?categoryId=${c.categoryId}'">删除此栏目</button>
-                            </td>
-                        </tr>
-                        </c:forEach>
+                            <tbody>
+
+                            <c:forEach items="${categoryList}" var="c">
+                            <tr role="row">
+                                <td class="sorting_1">${c.categoryId}</td>
+                                <td>${c.categoryTitle}</td>
+                                <td>${c.categoryLevel}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm pull-left" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_edit_page?categoryId=${c.categoryId}'">编辑栏目</button>
+                                    <button class="btn btn-danger btn-sm pull-right" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_delete?categoryId=${c.categoryId}'">删除栏目</button>
+                                </td>
+                            </tr>
+                            </c:forEach>
 
                         </tbody>
                         <form action="${pageContext.request.contextPath}/admin/admin_category_add" method="post">
                         <tfoot>
                         <tr>
                             <th rowspan="1" colspan="1">
-                                <button type="submit" class="btn btn-info pull-left">新增导航条栏目</button>
+                                <button type="submit" class="btn bg-navy btn-sm pull-left">新增导航条栏目</button>
                             </th>
                             <th rowspan="1" colspan="1">
-                                <input type="text" name="categoryTitle">
+                                <input type="text" name="categoryTitle" placeholder="导航条标题">
                             </th>
                             <th rowspan="1" colspan="1">
                                 <div class="form-group">
@@ -97,7 +94,7 @@
                                 </div>
                             </th>
                             <th rowspan="1" colspan="1">
-                                <button type="submit" class="btn btn-info pull-left" >新增导航条栏目</button>
+                                <button type="submit" class="btn bg-navy btn-sm pull-left" >新增导航条栏目</button>
                             </th>
                         </tr>
                         </tfoot>
@@ -117,6 +114,7 @@
         </div>
     </div>
     <!-- /.box-body -->
+</div>
 </div>
 
 <%@include file="../include/body/body-bottom.jsp"%>

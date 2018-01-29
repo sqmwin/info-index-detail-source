@@ -2,9 +2,8 @@ package com.mindnode.immipal.mapper;
 
 import com.mindnode.immipal.pojo.Ad;
 import com.mindnode.immipal.pojo.AdExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AdMapper {
     long countByExample(AdExample example);

@@ -1,6 +1,7 @@
 package com.mindnode.immipal.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author 
@@ -17,6 +18,8 @@ public class Ad implements Serializable {
     private String adLink;
 
     private Integer adLevel;
+
+    private Date adDate;
 
     private static final long serialVersionUID = 1L;
 
@@ -68,6 +71,14 @@ public class Ad implements Serializable {
         this.adLevel = adLevel;
     }
 
+    public Date getAdDate() {
+        return adDate;
+    }
+
+    public void setAdDate(Date adDate) {
+        this.adDate = adDate;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -85,7 +96,8 @@ public class Ad implements Serializable {
             && (this.getAdCreateTime() == null ? other.getAdCreateTime() == null : this.getAdCreateTime().equals(other.getAdCreateTime()))
             && (this.getAdImgUrl() == null ? other.getAdImgUrl() == null : this.getAdImgUrl().equals(other.getAdImgUrl()))
             && (this.getAdLink() == null ? other.getAdLink() == null : this.getAdLink().equals(other.getAdLink()))
-            && (this.getAdLevel() == null ? other.getAdLevel() == null : this.getAdLevel().equals(other.getAdLevel()));
+            && (this.getAdLevel() == null ? other.getAdLevel() == null : this.getAdLevel().equals(other.getAdLevel()))
+            && (this.getAdDate() == null ? other.getAdDate() == null : this.getAdDate().equals(other.getAdDate()));
     }
 
     @Override
@@ -98,6 +110,7 @@ public class Ad implements Serializable {
         result = prime * result + ((getAdImgUrl() == null) ? 0 : getAdImgUrl().hashCode());
         result = prime * result + ((getAdLink() == null) ? 0 : getAdLink().hashCode());
         result = prime * result + ((getAdLevel() == null) ? 0 : getAdLevel().hashCode());
+        result = prime * result + ((getAdDate() == null) ? 0 : getAdDate().hashCode());
         return result;
     }
 
@@ -113,6 +126,7 @@ public class Ad implements Serializable {
         sb.append(", adImgUrl=").append(adImgUrl);
         sb.append(", adLink=").append(adLink);
         sb.append(", adLevel=").append(adLevel);
+        sb.append(", adDate=").append(adDate);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

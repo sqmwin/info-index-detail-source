@@ -2,23 +2,29 @@ package com.mindnode.immipal.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.exception.upload.FileUploadException;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.pojo.News;
+import com.mindnode.immipal.pojo.Pic;
+import com.mindnode.immipal.pojo.Video;
 import com.mindnode.immipal.service.CategoryService;
 import com.mindnode.immipal.service.NewsService;
+import com.mindnode.immipal.service.PicService;
+import com.mindnode.immipal.service.VideoService;
 import com.mindnode.immipal.util.upload.FileUpLoad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +48,10 @@ public class NewsController {
     NewsService newsService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    PicService picService;
+    @Autowired
+    VideoService videoService;
 
     /**
      * 显示全部新闻列表
@@ -66,6 +76,10 @@ public class NewsController {
 
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("newsList", newsList);
+
+        PageInfo<News> pageInfo = new PageInfo<>(newsList);
+        model.addAttribute("pageInfo", pageInfo);
+
         return "admin/listNews";
     }
 
@@ -87,8 +101,12 @@ public class NewsController {
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
-        model.addAttribute("newsList", newsList);
+
         model.addAttribute("categoryList", categoryList);
+        model.addAttribute("newsList", newsList);
+
+        PageInfo<News> pageInfo = new PageInfo<>(newsList);
+        model.addAttribute("pageInfo", pageInfo);
         return "admin/listNews";
     }
 
@@ -110,8 +128,11 @@ public class NewsController {
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
-        model.addAttribute("newsList", newsList);
         model.addAttribute("categoryList", categoryList);
+        model.addAttribute("newsList", newsList);
+
+        PageInfo<News> pageInfo = new PageInfo<>(newsList);
+        model.addAttribute("pageInfo", pageInfo);
         return "admin/listNewsByCategoryId";
     }
 
@@ -153,6 +174,7 @@ public class NewsController {
     }
 
     /**
+     * 新增新闻通过获取的categoryId设置categoryTitle
      * 新建一个新闻，要获取当前时间毫秒值
      * 新闻中包含了最多三张图片的上传或一个视频的上传
      * 是否有视频是通过单选选择，值为yes，no
@@ -160,52 +182,75 @@ public class NewsController {
     @RequestMapping(value = "/admin_news_add", method = RequestMethod.POST)
     public String addNews(HttpSession session,
                           News news,
-                          @RequestParam("pic") MultipartFile[] pics,
-                          @RequestParam("video") MultipartFile video,
-                          @RequestParam("hasVideoOption") String hasVideoOption,
+                          MultipartFile[] file,
+                          String hasVideoOption,
                           Model model) {
-        final String redirectNewsAddPage = "redirect:/admin/admin_news_add_page";
-        if (news == null) {
-            return redirectNewsAddPage;
-        } else {
-            try {
-                news.setNewsCreateTime(System.currentTimeMillis());
+        try {
+            //新闻所属栏目分类标题未分配，此时通过表单里的categoryId来分配其categoryTitle
+            Category category = categoryService.get(news.getCategoryId());
+            String categoryTitle = category.getCategoryTitle();
+            news.setCategoryTitle(categoryTitle);
+
+            //设定其创建时间：包括时间信息及毫秒值
+            final long nowLong = System.currentTimeMillis();
+            final Date nowDate = new Date(nowLong);
+            news.setNewsCreateTime(nowLong);
+            news.setNewsDate(nowDate);
+            // 判断是否有上传文件
+            if (file.length == 0) {
+                model.addAttribute("message", "请上传展示图片");
+                return "redirect:/admin/admin_news_list";
+            } else {
                 final String yes = "yes";
                 final String no = "no";
-                if (hasVideoOption == null) {
-                    model.addAttribute("message", "请选择此条新闻是否包含视频");
-                    return redirectNewsAddPage;
-                }
-                //hasVideoOption=yes
-                if (hasVideoOption.equals(yes)) {
-                    //如果没有视频文件则提醒上传视频
-                    if (video.isEmpty()) {
-                        model.addAttribute("message", "没有视频文件");
-                        return redirectNewsAddPage;
-                    }
-                    //有视频文件要上传则设置news的hasVideo为true，上传视频，不管展示图片
-                    else {
-                        newsUploadVideo(session, news, video);
-                    }
-                }
-                //hasVideoOption=no
+                List<String> showImgUrlsList = new ArrayList<>();
+                //判断是否有视频,默认为no
                 if (hasVideoOption.equals(no)) {
-                    //如果没有图片文件则提醒上传图片
-                    if (pics.length == 0) {
-                        model.addAttribute("message", "没有图片");
-                        return redirectNewsAddPage;
-                    }
-                    //有图片文件则设置news的hasVideo为false，上传图片
-                    else {
-                        newsUploadPic(session, news, pics);
+                    //设置hasVideo为false
+                    news.setHasVideo(false);
+
+                    //上传图片
+                    for (MultipartFile multipartFile : file) {
+                        //上传图片，将图片地址传入数据库，并返回服务器地址
+                        String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
+                        //设置showImgUrls
+                        showImgUrlsList.add(imgUrl);
                     }
                 }
+                //如果有视频
+                if (hasVideoOption.equals(yes)) {
+                    // 设置hasVideo为true
+                    news.setHasVideo(true);
+                    //上传了一个视频，一张图片
+                    //判断是否为视频
+                    for (MultipartFile multipartFile : file) {
+                        //如果是视频，上传视频
+                        String originalName = multipartFile.getOriginalFilename();
+                        if (FileUpLoad.isVideo(originalName)) {
+                            String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
+                            //设置news的videoUrl
+                            news.setVideoUrl(videoUrl);
+                        }
+                        //如果是图片，上传图片
+                        else if(FileUpLoad.isPic(originalName)) {
+                            //上传图片，将图片地址传入数据库，并返回服务器地址
+                            String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
+                            //设置news的showImgUrls
+                            showImgUrlsList.add(imgUrl);
+                        }
+                        //如果是其他文件，返回原页面
+                        else {
+                            return "redirect:/admin/admin_news_add";
+                        }
+                    }
+                }
+                //图片上传完后设置news的showImgUrls字段
+                news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
+                //最终都要新增入数据库
                 newsService.add(news);
-            } catch (FileUploadException e) {
-                model.addAttribute("message", e.getMessage());
-            } catch (IOException e) {
-                model.addAttribute("message", "传输文件失败");
             }
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
         }
         return REDIRECT_NEWS_LIST;
     }
@@ -216,51 +261,113 @@ public class NewsController {
     @RequestMapping(value = "/admin_news_edit", method = RequestMethod.POST)
     public String editNews(HttpSession session,
                            News news,
-                           @RequestParam("pic") MultipartFile[] pics,
-                           @RequestParam("video") MultipartFile video,
-                           @RequestParam("hasVideoOption") String hasVideoOption,
+                           MultipartFile[] file,
+                           String hasVideoOption,
+                           String reUploadVideo,
+                           String reUploadPic,
                            Model model) {
-        final String redirectNewsEditPage = "redirect:/admin/admin_news_edit_page";
-        if (news == null) {
-            return REDIRECT_NEWS_LIST;
-        } else {
-            try {
-                final String yes = "yes";
-                final String no = "no";
-                if (hasVideoOption == null) {
-                    model.addAttribute("message", "请选择此条新闻是否包含视频");
-                    return redirectNewsEditPage + "?newsID=" + news.getNewsId();
-                }
-                //hasVideoOption=yes，
+        try {
+            News originalNews = newsService.getByNewsId(news.getNewsId());
+
+            //新闻所属栏目分类标题未分配，此时通过表单里的categoryId来分配其categoryTitle
+            Category category = categoryService.get(news.getCategoryId());
+            String categoryTitle = category.getCategoryTitle();
+            news.setCategoryTitle(categoryTitle);
+
+            final String yes = "yes";
+            final String no = "no";
+            List<String> showImgUrlsList = new ArrayList<>();
+            //若重新上传视频或删除原视频
+            if (reUploadVideo.equals(yes)) {
+                //如果hasVideo为yes
                 if (hasVideoOption.equals(yes)) {
-                    //如果没有视频文件则提醒上传视频
-                    if (video.isEmpty()) {
-                        model.addAttribute("message", "没有视频文件");
-                        return redirectNewsEditPage + "?newsID=" + news.getNewsId();
+                    // 设置hasVideo为true
+                    news.setHasVideo(true);
+                    // 判断是否重新上传展示图片
+                    if (reUploadPic.equals(yes)) {
+                        for (MultipartFile multipartFile : file) {
+                            //如果是视频，上传视频
+                            String originalName = multipartFile.getOriginalFilename();
+                            if (FileUpLoad.isVideo(originalName)) {
+                                String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
+                                //设置news的videoUrl
+                                news.setVideoUrl(videoUrl);
+                            }
+                            //如果是图片，上传图片
+                            else if (FileUpLoad.isPic(originalName)) {
+                                //上传图片，将图片地址传入数据库，并返回服务器地址
+                                String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
+                                //设置news的showImgUrls
+                                showImgUrlsList.add(imgUrl);
+                                //图片上传完后设置news的showImgUrls字段
+                                news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
+                            }
+                        }
                     }
-                    //如果有视频文件则替换原文件，设置news的hasVideo为true，上传视频，不管展示图片
-                    else {
-                        newsUploadVideo(session, news, video);
+                    if (reUploadPic.equals(no)) {
+                        for (MultipartFile multipartFile : file) {
+                            //如果是视频，上传视频
+                            String originalName = multipartFile.getOriginalFilename();
+                            if (FileUpLoad.isVideo(originalName)) {
+                                String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
+                                //设置news的videoUrl
+                                news.setVideoUrl(videoUrl);
+                            }
+                        }
+                        news.setShowImgCount(originalNews.getShowImgCount());
+                        news.setShowImgUrls(originalNews.getShowImgUrls());
                     }
                 }
-                //hasVideoOption=false
                 if (hasVideoOption.equals(no)) {
-                    //如果没有图片文件则提醒上传图片
-                    if (pics.length == 0) {
-                        model.addAttribute("message", "没有图片");
-                        return redirectNewsEditPage + "?newsID=" + news.getNewsId();
-                    }
-                    //如果有图片文件则替换源文件，设置news的hasVideo为false，上传图片，不管视频
-                    else {
-                        newsUploadPic(session, news, pics);
+                    //设置hasVideo为false
+                    news.setHasVideo(false);
+                    //上传图片
+                    if (file.length != 0) {
+                        for (MultipartFile multipartFile : file) {
+                            if (!multipartFile.isEmpty()) {
+                                //上传图片，将图片地址传入数据库，并返回服务器地址
+                                String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
+                                //设置showImgUrls
+                                showImgUrlsList.add(imgUrl);
+                                //图片上传完后设置news的showImgUrls字段
+                                news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
+                            }
+                        }
                     }
                 }
-                newsService.update(news);
-            } catch (FileUploadException e) {
-                model.addAttribute("message", e.getMessage());
-            } catch (IOException e) {
-                model.addAttribute("message", "传输文件失败");
+            } else if (reUploadVideo.equals(no)) {
+                news.setHasVideo(originalNews.getHasVideo());
+                news.setVideoUrl(originalNews.getVideoUrl());
+                if (reUploadPic.equals(yes)) {
+                    //上传图片
+                    if (file.length != 0) {
+                        for (MultipartFile multipartFile : file) {
+                            if (!multipartFile.isEmpty()) {
+                                String originalName = multipartFile.getOriginalFilename();
+                                if (FileUpLoad.isPic(originalName)) {
+                                    //上传图片，将图片地址传入数据库，并返回服务器地址
+                                    String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
+                                    //设置showImgUrls
+                                    showImgUrlsList.add(imgUrl);
+                                    //图片上传完后设置news的showImgUrls字段
+                                    news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
+                                }
+                            }
+                        }
+                    }
+                } else if (reUploadPic.equals(no)) {
+                    news.setShowImgCount(originalNews.getShowImgCount());
+                    news.setShowImgUrls(originalNews.getShowImgUrls());
+                }
             }
+            news.setNewsDate(originalNews.getNewsDate());
+            news.setNewsCreateTime(originalNews.getNewsCreateTime());
+            news.setNewsTop(originalNews.getNewsTop());
+            news.setRecommend(originalNews.getRecommend());
+            //最终都要新增入数据库
+            newsService.update(news);
+        }catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
         }
         return REDIRECT_NEWS_LIST;
     }
@@ -274,24 +381,95 @@ public class NewsController {
         return REDIRECT_NEWS_LIST;
     }
 
-    private void newsUploadVideo(HttpSession session,News news,MultipartFile video) throws FileUploadException,IOException {
-        news.setHasVideo(true);
-        String videoPath = FileUpLoad.uploadVideo(session, video);
-        news.setShowImgUrls(videoPath);
 
-        System.out.println("视频上传的访问地址：" + videoPath);
-    }
-
-    private void newsUploadPic(HttpSession session,News news, MultipartFile[] pics) throws FileUploadException,IOException {
-        news.setHasVideo(false);
-        List<String> picPaths = new ArrayList<>();
-        for (MultipartFile pic : pics) {
-            String picPath = FileUpLoad.uploadPic(session, pic);
-            picPaths.add(picPath);
+    /**
+     * 设为推荐
+     */
+    @RequestMapping(value = "/admin_news_recommend", method = RequestMethod.GET)
+    public String recommendNews(Integer newsId,Model model) {
+        try {
+            News news = newsService.getByNewsId(newsId);
+            news.setRecommend(true);
+            newsService.update(news);
+        } catch (NullObjectException e) {
+            model.addAttribute("message", e.getMessage());
         }
-        String json = JSON.toJSONString(picPaths);
-        news.setShowImgUrls(json);
-
-        System.out.println("图片上传的地址：" + json);
+        return REDIRECT_NEWS_LIST;
     }
+
+    /**
+     * 取消推荐
+     */
+    @RequestMapping(value = "/admin_news_recommend_cancel", method = RequestMethod.GET)
+    public String cancelRecommendNews(Integer newsId,Model model) {
+        try {
+            News news = newsService.getByNewsId(newsId);
+            news.setRecommend(false);
+            newsService.update(news);
+        } catch (NullObjectException e) {
+            model.addAttribute("message", e.getMessage());
+        }
+        return REDIRECT_NEWS_LIST;
+    }
+
+    /**
+     * 设为置顶,取消同分类的已置顶的news
+     */
+    @RequestMapping(value = "/admin_news_top", method = RequestMethod.GET)
+    public String topNews(Integer newsId,Model model) {
+        try {
+            News news = newsService.getByNewsId(newsId);
+            List<News> topNewsList = newsService.listByCategoryId(news.getCategoryId());
+            if (topNewsList != null) {
+                for (News topNews : topNewsList) {
+                    topNews.setNewsTop(false);
+                    newsService.update(topNews);
+                }
+            }
+            news.setNewsTop(true);
+            newsService.update(news);
+            return REDIRECT_NEWS_LIST_BY_CATEGORY_ID + "?categoryId=" + news.getCategoryId();
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+        }
+        return REDIRECT_NEWS_LIST;
+    }
+
+    /**取消置顶*/
+    @RequestMapping(value = "/admin_news_top_cancel",method = RequestMethod.GET)
+    public String cancelTopNews(Integer newsId,Model model) {
+        try {
+            News news = newsService.getByNewsId(newsId);
+            news.setNewsTop(false);
+            newsService.update(news);
+            return REDIRECT_NEWS_LIST_BY_CATEGORY_ID + "?categoryId=" + news.getCategoryId();
+        } catch (NullObjectException e) {
+            model.addAttribute("message", e.getMessage());
+        }
+        return REDIRECT_NEWS_LIST;
+    }
+
+
+    /**上传图片，并将图片地址存入数据库，并返回图片地址*/
+    private String uploadPicAndSetPicDB(HttpSession session, MultipartFile multipartFile) throws IOException, FileUploadException {
+        String imgUrl = FileUpLoad.uploadPic(session, multipartFile);
+        //新增Pic
+        Pic pic = new Pic();
+        pic.setPicUrl(imgUrl);
+        picService.add(pic);
+        return imgUrl;
+    }
+
+    /**上传视频，将视频地址存入数据库，并返回视频地址*/
+    private String uploadVideoAndSetVideoDB(HttpSession session,MultipartFile multipartFile) throws IOException, FileUploadException{
+        String videoUrl = FileUpLoad.uploadVideo(session, multipartFile);
+        //新增Video
+        Video video = new Video();
+        video.setVideoUrl(videoUrl);
+        videoService.add(video);
+        return videoUrl;
+    }
+
+
 }
+

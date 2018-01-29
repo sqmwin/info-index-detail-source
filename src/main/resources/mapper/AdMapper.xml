@@ -8,6 +8,7 @@
     <result column="ad_img_url" jdbcType="VARCHAR" property="adImgUrl" />
     <result column="ad_link" jdbcType="VARCHAR" property="adLink" />
     <result column="ad_level" jdbcType="INTEGER" property="adLevel" />
+    <result column="ad_date" jdbcType="TIMESTAMP" property="adDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    ad_id, ad_title, ad_create_time, ad_img_url, ad_link, ad_level
+    ad_id, ad_title, ad_create_time, ad_img_url, ad_link, ad_level, ad_date
   </sql>
   <select id="selectByExample" parameterType="com.mindnode.immipal.pojo.AdExample" resultMap="BaseResultMap">
     select
@@ -110,11 +111,11 @@
   </delete>
   <insert id="insert" parameterType="com.mindnode.immipal.pojo.Ad">
     insert into ad (ad_id, ad_title, ad_create_time, 
-      ad_img_url, ad_link, ad_level
-      )
+      ad_img_url, ad_link, ad_level, 
+      ad_date)
     values (#{adId,jdbcType=INTEGER}, #{adTitle,jdbcType=VARCHAR}, #{adCreateTime,jdbcType=BIGINT}, 
-      #{adImgUrl,jdbcType=VARCHAR}, #{adLink,jdbcType=VARCHAR}, #{adLevel,jdbcType=INTEGER}
-      )
+      #{adImgUrl,jdbcType=VARCHAR}, #{adLink,jdbcType=VARCHAR}, #{adLevel,jdbcType=INTEGER}, 
+      #{adDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.mindnode.immipal.pojo.Ad">
     insert into ad
@@ -137,6 +138,9 @@
       <if test="adLevel != null">
         ad_level,
       </if>
+      <if test="adDate != null">
+        ad_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="adId != null">
@@ -156,6 +160,9 @@
       </if>
       <if test="adLevel != null">
         #{adLevel,jdbcType=INTEGER},
+      </if>
+      <if test="adDate != null">
+        #{adDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -186,6 +193,9 @@
       <if test="record.adLevel != null">
         ad_level = #{record.adLevel,jdbcType=INTEGER},
       </if>
+      <if test="record.adDate != null">
+        ad_date = #{record.adDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -198,7 +208,8 @@
       ad_create_time = #{record.adCreateTime,jdbcType=BIGINT},
       ad_img_url = #{record.adImgUrl,jdbcType=VARCHAR},
       ad_link = #{record.adLink,jdbcType=VARCHAR},
-      ad_level = #{record.adLevel,jdbcType=INTEGER}
+      ad_level = #{record.adLevel,jdbcType=INTEGER},
+      ad_date = #{record.adDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -221,6 +232,9 @@
       <if test="adLevel != null">
         ad_level = #{adLevel,jdbcType=INTEGER},
       </if>
+      <if test="adDate != null">
+        ad_date = #{adDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where ad_id = #{adId,jdbcType=INTEGER}
   </update>
@@ -230,7 +244,8 @@
       ad_create_time = #{adCreateTime,jdbcType=BIGINT},
       ad_img_url = #{adImgUrl,jdbcType=VARCHAR},
       ad_link = #{adLink,jdbcType=VARCHAR},
-      ad_level = #{adLevel,jdbcType=INTEGER}
+      ad_level = #{adLevel,jdbcType=INTEGER},
+      ad_date = #{adDate,jdbcType=TIMESTAMP}
     where ad_id = #{adId,jdbcType=INTEGER}
   </update>
 </mapper>

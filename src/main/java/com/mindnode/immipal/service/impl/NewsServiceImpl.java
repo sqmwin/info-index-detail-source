@@ -69,6 +69,13 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public List<News> listByNewsTopTrueAndCategoryId(int categoryId){
+        NewsExample example = new NewsExample();
+        example.createCriteria().andNewsTopEqualTo(true).andCategoryIdEqualTo(categoryId);
+        return newsMapper.selectByExample(example);
+    }
+
+    @Override
     public List<News> listAll() throws NullListException {
         List<News> newsList = newsMapper.selectByExample(new NewsExample());
         if (newsList == null) {
