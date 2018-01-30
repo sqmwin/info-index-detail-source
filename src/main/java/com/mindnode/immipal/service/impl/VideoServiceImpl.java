@@ -1,7 +1,5 @@
 package com.mindnode.immipal.service.impl;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.mapper.VideoMapper;
 import com.mindnode.immipal.pojo.Video;
 import com.mindnode.immipal.pojo.VideoExample;
@@ -31,20 +29,12 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video get(int videoId) throws NullObjectException {
-        Video video = videoMapper.selectByPrimaryKey(videoId);
-        if (video == null) {
-            throw new NullObjectException("没有视频：" + videoId);
-        }
-        return video;
+    public Video get(int videoId){
+        return  videoMapper.selectByPrimaryKey(videoId);
     }
 
     @Override
-    public List<Video> listAll() throws NullListException {
-        List<Video> videoList = videoMapper.selectByExample(new VideoExample());
-        if (videoList == null) {
-            throw new NullListException("没有视频");
-        }
-        return videoList;
+    public List<Video> listAll(){
+        return  videoMapper.selectByExample(new VideoExample());
     }
 }

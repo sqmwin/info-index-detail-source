@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * <p>
+ * <p>文件上传类
+ *      包括图片上传，视频上传，图片、视频格式判断
+ * </p>
  *
  * @author SQM
  * @create 2018/1/11
@@ -117,9 +119,9 @@ public class FileUpLoad {
         return false;
     }
 
-    //将表单中的文件上传至指定的服务器位置
     /**
      *<p>
+     *     将表单中的文件上传至指定的服务器位置
      *@param file   要上传的文件
      *@param fileAbsolutePath   要上传文件的服务器路径
      *@return File   上传的文件

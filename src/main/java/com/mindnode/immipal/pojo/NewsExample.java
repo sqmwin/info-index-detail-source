@@ -1024,6 +1024,66 @@ public class NewsExample {
             addCriterion("video_url not between", value1, value2, "videoUrl");
             return (Criteria) this;
         }
+
+        public Criteria andNewsRecommendTopIsNull() {
+            addCriterion("news_recommend_top is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopIsNotNull() {
+            addCriterion("news_recommend_top is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopEqualTo(Boolean value) {
+            addCriterion("news_recommend_top =", value, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopNotEqualTo(Boolean value) {
+            addCriterion("news_recommend_top <>", value, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopGreaterThan(Boolean value) {
+            addCriterion("news_recommend_top >", value, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("news_recommend_top >=", value, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopLessThan(Boolean value) {
+            addCriterion("news_recommend_top <", value, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopLessThanOrEqualTo(Boolean value) {
+            addCriterion("news_recommend_top <=", value, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopIn(List<Boolean> values) {
+            addCriterion("news_recommend_top in", values, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopNotIn(List<Boolean> values) {
+            addCriterion("news_recommend_top not in", values, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopBetween(Boolean value1, Boolean value2) {
+            addCriterion("news_recommend_top between", value1, value2, "newsRecommendTop");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewsRecommendTopNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("news_recommend_top not between", value1, value2, "newsRecommendTop");
+            return (Criteria) this;
+        }
     }
 
     /**

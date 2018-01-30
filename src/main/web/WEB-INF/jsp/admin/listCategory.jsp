@@ -62,8 +62,8 @@
                                 <td>${c.categoryTitle}</td>
                                 <td>${c.categoryLevel}</td>
                                 <td>
-                                    <button class="btn btn-info btn-sm pull-left" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_edit_page?categoryId=${c.categoryId}'">编辑栏目</button>
-                                    <button class="btn btn-danger btn-sm pull-right" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_delete?categoryId=${c.categoryId}'">删除栏目</button>
+                                    <button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_edit_page?categoryId=${c.categoryId}'">编辑栏目</button>
+                                    <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_delete?categoryId=${c.categoryId}'">删除栏目</button>
                                 </td>
                             </tr>
                             </c:forEach>

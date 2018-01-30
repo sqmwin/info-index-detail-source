@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -27,8 +28,8 @@ public class UploadController {
      * 富文本编辑器上传图片
      */
     @RequestMapping(value = "/upload_pic",method = RequestMethod.POST)
+    @ResponseBody
     public String uploadPic(HttpSession session, @RequestParam("file") MultipartFile file) {
-        String http = "http://127.0.0.1:8080";
         String serverPath = null;
         //上传图片
         try {
@@ -42,7 +43,7 @@ public class UploadController {
             return JSON.toJSONString(e.getMessage());
         }
 
-        return http + serverPath;
+        return serverPath;
     }
 
 

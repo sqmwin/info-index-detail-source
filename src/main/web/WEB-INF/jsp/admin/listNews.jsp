@@ -78,6 +78,9 @@
                                     是否推荐
                                 </th>
                                 <th tabindex="0" aria-controls="table" rowspan="1" colspan="1">
+                                    是否推荐中置顶
+                                </th>
+                                <th tabindex="0" aria-controls="table" rowspan="1" colspan="1">
                                     新闻操作
                                 </th>
                             </tr>
@@ -98,13 +101,16 @@
                                     <td>${n.showImgCount}</td>
                                     <td>${n.newsTop}</td>
                                     <td>${n.recommend}</td>
+                                    <td>${n.newsRecommendTop}</td>
                                     <td>
-                                        <button class="btn btn-success btn-sm pull-left" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_recommend?newsId=${n.newsId}'">设为推荐</button>
-                                        <button class="btn btn-danger btn-sm " onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_recommend_cancel?newsId=${n.newsId}'">取消推荐</button>
-                                        <button class="btn btn-success btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_top?newsId=${n.newsId}'">设为置顶</button>
+                                        <button class="btn btn-warning btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_top?newsId=${n.newsId}'">设为置顶</button>
                                         <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_top_cancel?newsId=${n.newsId}'">取消置顶</button>
+                                        <button class="btn btn-success btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_recommend?newsId=${n.newsId}'">设为推荐</button>
+                                        <button class="btn btn-danger btn-sm " onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_recommend_cancel?newsId=${n.newsId}'">取消推荐</button>
+                                        <button class="btn btn-success btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_recommend_top?newsId=${n.newsId}'">设为推荐置顶</button>
+                                        <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_recommend_top_cancel?newsId=${n.newsId}'">取消推荐置顶</button>
                                         <button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_edit_page?newsId=${n.newsId}'">编辑新闻</button>
-                                        <button class="btn btn-danger btn-sm pull-right" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_delete?newsId=${n.newsId}'">删除新闻</button>
+                                        <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_delete?newsId=${n.newsId}'">删除新闻</button>
                                     </td>
                                 </tr>
                             </c:forEach>

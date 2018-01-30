@@ -1,7 +1,5 @@
 package com.mindnode.immipal.service.impl;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.mapper.NewsMapper;
 import com.mindnode.immipal.pojo.News;
 import com.mindnode.immipal.pojo.NewsExample;
@@ -32,7 +30,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void update(News news) {
-        newsMapper.updateByPrimaryKey(news);
+        newsMapper.updateByPrimaryKeyWithBLOBs(news);
     }
 
     @Override
@@ -60,12 +58,15 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News getByNewsId(int newsId)throws NullObjectException {
-        News news = newsMapper.selectByPrimaryKey(newsId);
-        if (news == null) {
-            throw new NullObjectException("无此新闻");
-        }
-        return news;
+    public News getByNewsId(int newsId){
+        return newsMapper.selectByPrimaryKey(newsId);
+    }
+
+    @Override
+    public List<News> listByNewsRecommendTopTrue() {
+        NewsExample example = new NewsExample();
+        example.createCriteria().andNewsRecommendTopEqualTo(true);
+        return newsMapper.selectByExample(example);
     }
 
     @Override
@@ -76,46 +77,30 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> listAll() throws NullListException {
-        List<News> newsList = newsMapper.selectByExample(new NewsExample());
-        if (newsList == null) {
-            throw new NullListException("此新闻列表为空");
-        }
-        return newsList;
+    public List<News> listAll(){
+        return newsMapper.selectByExample(new NewsExample());
     }
 
     @Override
-    public List<News> listAllOrderByCreateTime() throws NullListException{
+    public List<News> listAllOrderByCreateTime(){
         NewsExample example = new NewsExample();
         example.setOrderByClause("news_create_time desc");
-        List<News> newsList = newsMapper.selectByExample(example);
-        if (newsList == null) {
-            throw new NullListException("此新闻列表为空");
-        }
-        return newsList;
+        return newsMapper.selectByExample(example);
     }
 
     @Override
-    public List<News> listByRecommend() throws NullListException{
+    public List<News> listByRecommend(){
         NewsExample example = new NewsExample();
         example.createCriteria().andRecommendEqualTo(true);
         example.setOrderByClause("news_create_time desc");
-        List<News> newsList = newsMapper.selectByExample(example);
-        if (newsList == null) {
-            throw new NullListException("此新闻列表为空");
-        }
-        return newsList;
+        return newsMapper.selectByExample(example);
     }
 
     @Override
-    public List<News> listByCategoryId(int categoryId) throws NullListException {
+    public List<News> listByCategoryId(int categoryId){
         NewsExample example = new NewsExample();
         example.createCriteria().andCategoryIdEqualTo(categoryId);
         example.setOrderByClause("news_create_time desc");
-        List<News> newsList = newsMapper.selectByExample(example);
-        if (newsList == null) {
-            throw new NullListException("此新闻列表为空");
-        }
-        return newsList;
+        return newsMapper.selectByExample(example);
     }
 }

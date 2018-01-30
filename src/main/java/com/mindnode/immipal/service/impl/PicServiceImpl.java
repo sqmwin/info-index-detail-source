@@ -1,7 +1,5 @@
 package com.mindnode.immipal.service.impl;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.mapper.PicMapper;
 import com.mindnode.immipal.pojo.Pic;
 import com.mindnode.immipal.pojo.PicExample;
@@ -32,20 +30,12 @@ public class PicServiceImpl implements PicService {
     }
 
     @Override
-    public Pic get(int picId) throws NullObjectException {
-        Pic pic = picMapper.selectByPrimaryKey(picId);
-        if (pic == null) {
-            throw new NullObjectException("没有此图片：" + picId);
-        }
-        return pic;
+    public Pic get(int picId){
+        return picMapper.selectByPrimaryKey(picId);
     }
 
     @Override
-    public List<Pic> listAll() throws NullListException {
-        List<Pic> picList = picMapper.selectByExample(new PicExample());
-        if (picList == null) {
-            throw new NullListException("没有图片");
-        }
-        return picList;
+    public List<Pic> listAll(){
+        return picMapper.selectByExample(new PicExample());
     }
 }

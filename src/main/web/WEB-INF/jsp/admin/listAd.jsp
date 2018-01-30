@@ -76,8 +76,8 @@
                                     <td>${a.adLink}</td>
                                     <td>${a.adLevel}</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm pull-left" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_edit_page?adId=${a.adId}'">编辑栏目</button>
-                                        <button class="btn btn-danger btn-sm pull-right" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_delete?adId=${a.adId}'">删除栏目</button>
+                                        <button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_edit_page?adId=${a.adId}'">编辑广告</button>
+                                        <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_delete?adId=${a.adId}'">删除广告</button>
                                     </td>
                                 </tr>
                             </c:forEach>

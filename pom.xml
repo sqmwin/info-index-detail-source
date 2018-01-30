@@ -50,6 +50,7 @@
         <mybatis-ehcache.version>1.0.3</mybatis-ehcache.version>
 
         <slf4j-api.version>1.7.25</slf4j-api.version>
+        <log4j.version>1.2.17</log4j.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <logback-ext-spring>0.1.4</logback-ext-spring>
 
@@ -121,22 +122,33 @@
         <!--slf4j + logback start-->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-api.version}</version>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-api</artifactId>-->
+            <!--<version>${slf4j-api.version}</version>-->
+        <!--</dependency>-->
+
         <!--自动下载logback-core，commons-logging-->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-classic.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>ch.qos.logback</groupId>-->
+            <!--<artifactId>logback-classic</artifactId>-->
+            <!--<version>${logback-classic.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
         <!--logback官方Spring支持包，提供LogbackConfigListener的支持-->
-        <dependency>
-            <groupId>org.logback-extensions</groupId>
-            <artifactId>logback-ext-spring</artifactId>
-            <version>${logback-ext-spring}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.logback-extensions</groupId>-->
+            <!--<artifactId>logback-ext-spring</artifactId>-->
+            <!--<version>${logback-ext-spring}</version>-->
+        <!--</dependency>-->
         <!--slf4j + logback end-->
 
         <!--spring start-->

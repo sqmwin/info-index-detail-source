@@ -170,7 +170,7 @@
     };
     //上传图片
     //图片上传接口路径
-    var path = "http://127.0.0.1:8080" + "${pageContext.request.contextPath}/file/upload_pic";
+    var path = "${pageContext.request.contextPath}/file/upload_pic";
     editor.customConfig.uploadImgServer = path;
     editor.customConfig.uploadImgMaxSize = 1.5 * 1024 * 1024; //限制上传图片的大小
     editor.customConfig.uploadImgMaxLength = 1; //限制一次上传图片的数量
@@ -216,7 +216,7 @@
                 // }
                 // insertImg(imgArr[i]);
             // }
-            // result 必须是一个 JSON 格式字符串！！！否则报错
+            // result 必须是一个 JSON 格式字符串！！！
             insertImg(result);
         }
     };

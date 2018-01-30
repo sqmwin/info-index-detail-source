@@ -1,7 +1,5 @@
 package com.mindnode.immipal.service.impl;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.mapper.CategoryMapper;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.pojo.CategoryExample;
@@ -37,31 +35,19 @@ public class CategoryServiceImpl implements CategoryService  {
     }
 
     @Override
-    public Category get(int categoryId) throws NullObjectException {
-        Category category = categoryMapper.selectByPrimaryKey(categoryId);
-        if (category == null) {
-            throw new NullObjectException("无此栏目");
-        }
-        return category;
+    public Category get(int categoryId){
+        return categoryMapper.selectByPrimaryKey(categoryId);
     }
 
     @Override
-    public List<Category> listAll() throws NullListException {
-        List<Category> categoryList = categoryMapper.selectByExample(new CategoryExample());
-        if (categoryList == null) {
-            throw new NullListException("此栏目列表为空");
-        }
-        return categoryList;
+    public List<Category> listAll(){
+        return categoryMapper.selectByExample(new CategoryExample());
     }
 
     @Override
-    public List<Category> listAllOrderByLevel() throws NullListException{
+    public List<Category> listAllOrderByLevel(){
         CategoryExample example = new CategoryExample();
         example.setOrderByClause("category_level");
-        List<Category> categoryList = categoryMapper.selectByExample(example);
-        if (categoryList == null) {
-            throw new NullListException("此栏目列表为空");
-        }
-        return categoryList;
+        return categoryMapper.selectByExample(example);
     }
 }

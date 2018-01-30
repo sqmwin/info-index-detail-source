@@ -35,6 +35,8 @@ public class News implements Serializable {
 
     private String videoUrl;
 
+    private Boolean newsRecommendTop;
+
     private String newsContent;
 
     private static final long serialVersionUID = 1L;
@@ -151,6 +153,14 @@ public class News implements Serializable {
         this.videoUrl = videoUrl;
     }
 
+    public Boolean getNewsRecommendTop() {
+        return newsRecommendTop;
+    }
+
+    public void setNewsRecommendTop(Boolean newsRecommendTop) {
+        this.newsRecommendTop = newsRecommendTop;
+    }
+
     public String getNewsContent() {
         return newsContent;
     }
@@ -185,6 +195,7 @@ public class News implements Serializable {
             && (this.getCategoryTitle() == null ? other.getCategoryTitle() == null : this.getCategoryTitle().equals(other.getCategoryTitle()))
             && (this.getNewsDate() == null ? other.getNewsDate() == null : this.getNewsDate().equals(other.getNewsDate()))
             && (this.getVideoUrl() == null ? other.getVideoUrl() == null : this.getVideoUrl().equals(other.getVideoUrl()))
+            && (this.getNewsRecommendTop() == null ? other.getNewsRecommendTop() == null : this.getNewsRecommendTop().equals(other.getNewsRecommendTop()))
             && (this.getNewsContent() == null ? other.getNewsContent() == null : this.getNewsContent().equals(other.getNewsContent()));
     }
 
@@ -206,6 +217,7 @@ public class News implements Serializable {
         result = prime * result + ((getCategoryTitle() == null) ? 0 : getCategoryTitle().hashCode());
         result = prime * result + ((getNewsDate() == null) ? 0 : getNewsDate().hashCode());
         result = prime * result + ((getVideoUrl() == null) ? 0 : getVideoUrl().hashCode());
+        result = prime * result + ((getNewsRecommendTop() == null) ? 0 : getNewsRecommendTop().hashCode());
         result = prime * result + ((getNewsContent() == null) ? 0 : getNewsContent().hashCode());
         return result;
     }
@@ -230,6 +242,7 @@ public class News implements Serializable {
         sb.append(", categoryTitle=").append(categoryTitle);
         sb.append(", newsDate=").append(newsDate);
         sb.append(", videoUrl=").append(videoUrl);
+        sb.append(", newsRecommendTop=").append(newsRecommendTop);
         sb.append(", newsContent=").append(newsContent);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");

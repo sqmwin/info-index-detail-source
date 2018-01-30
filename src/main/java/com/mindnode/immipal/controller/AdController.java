@@ -2,8 +2,6 @@ package com.mindnode.immipal.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Ad;
 import com.mindnode.immipal.service.AdService;
 import com.mindnode.immipal.util.upload.FileUpLoad;
@@ -26,6 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdController {
+    private final int PAGE_SIZE = 10;
     @Autowired
     AdService adService;
 
@@ -35,18 +34,15 @@ public class AdController {
      */
     @RequestMapping(value = "/admin_ad_list", method = RequestMethod.GET)
     public String listAd(Integer pageNum, Model model) {
-        final int pageSize = 10;
         if (pageNum == null) {
-            PageHelper.startPage(1, pageSize);
+            PageHelper.startPage(1, PAGE_SIZE);
         } else {
-            PageHelper.startPage(pageNum, pageSize);
+            PageHelper.startPage(pageNum, PAGE_SIZE);
         }
         List<Ad> adList = null;
-        try {
-            adList = adService.listAll();
-        } catch (NullListException e) {
-            model.addAttribute("message", e.getMessage());
-        }
+
+        adList = adService.listAll();
+
         model.addAttribute("adList", adList);
 
 
@@ -84,12 +80,8 @@ public class AdController {
      */
     @RequestMapping(value = "/admin_ad_edit_page", method = RequestMethod.GET)
     public String editAdPage(Integer adId, Model model) {
-        Ad ad = null;
-        try {
-            ad = adService.get(adId);
-        } catch (NullObjectException e) {
-            model.addAttribute("message", e.getMessage());
-        }
+        Ad ad = adService.get(adId);
+
         model.addAttribute("ad", ad);
         return "/admin/edit/editAd";
     }

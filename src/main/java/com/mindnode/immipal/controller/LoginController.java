@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @version 1.0
  * @date 2018/1/26
  */
-@Controller()
+@Controller
 @RequestMapping("")
 public class LoginController {
 

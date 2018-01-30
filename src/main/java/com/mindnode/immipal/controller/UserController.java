@@ -1,7 +1,5 @@
 package com.mindnode.immipal.controller;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.exception.user.ChangePasswordException;
 import com.mindnode.immipal.exception.user.WrongUserInformationException;
 import com.mindnode.immipal.pojo.User;
@@ -45,14 +43,11 @@ public class UserController {
             return "fore/loginPage";
             // return "admin/home";
         }
-        User userInDataBase = null;
-        try {
-            userInDataBase = userService.getByUsername(user.getUserUsername());
-        } catch (NullObjectException e) {
-            model.addAttribute("message", e.getMessage());
-        }
-        session.setAttribute("user", userInDataBase);
+        User userInDataBase = userService.getByUsername(user.getUserUsername());
 
+        if (userInDataBase != null) {
+            session.setAttribute("user", userInDataBase);
+        }
         return "admin/home";
     }
 
@@ -94,13 +89,10 @@ public class UserController {
      */
     @RequestMapping(value = "/admin_user_list", method = RequestMethod.GET)
     public String listUser(Model model) {
-        List<User> userList = null;
-        try {
-            userList = userService.listExceptAdmin();
-        } catch (NullListException e) {
-            model.addAttribute("message", e.getMessage());
+        List<User> userList  = userService.listExceptAdmin();
+        if (userList != null) {
+            model.addAttribute("userList", userList);
         }
-        model.addAttribute("userList", userList);
         return "admin/listUser";
     }
 }

@@ -24,11 +24,11 @@
     <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">编辑广告</h3>
-            <h3 class="box-title alert-message">${message}</h3>
+            <h3 class="alert-message">${message}</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_category_edit">
+        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_ad_edit" enctype="multipart/form-data">
             <div class="box-body">
                 <div class="form-group">
                     <label for="adId" class="col-sm-3 control-label">广告ID</label>
@@ -46,19 +46,18 @@
                     <label class="col-sm-3 control-label">是否更改图片或重新上传图片？</label>
                     <div class="col-sm-6">
                         <p class="col-sm-3 control-label text-left">
-                            <input type="radio" name="changeImg" class="iradio_flat-blue" value="no" onclick="displayOption(false,'uploadPicDiv')" checked>
+                            <input type="radio" name="changeImg" class="iradio_flat-blue" value="no" onclick="uploadPic(0)" checked>
                             否
                         </p>
                         <p class="col-sm-3 control-label">
-                            <input type="radio" name="changeImg" class="iradio_flat-blue" value="yes" onclick="displayOption(true,'uploadPicDiv')">
+                            <input type="radio" name="changeImg" class="iradio_flat-blue" value="yes" onclick="uploadPic(1)">
                             是
                         </p>
                     </div>
                 </div>
-                <div class="form-group" id="uploadPicDiv" style="display:none">
+                <div class="form-group" >
                     <label class="col-sm-3 control-label">上传广告图片</label>
-                    <div class="col-sm-6">
-                        <input type="file" name="file">
+                    <div class="col-sm-6" id="uploadPicDiv">
                     </div>
                 </div>
                 <div class="form-group">
@@ -105,13 +104,23 @@
 <!-- /.box -->
 </div>
 <script type="text/javascript">
-    //是否显示div选项
-    function displayOption(boolean,element) {
-        var div = document.getElementById(element);
-        if (boolean) {
-            div.setAttribute("style", "display:block");
-        }else {
-            div.setAttribute("style", "display:none");
+
+    // 点击num张展示图片，提供num个上传框
+    function uploadPic(num) {
+        //获取上传块父元素
+        var parent = document.getElementById("uploadPicDiv");
+
+        // 删除父元素中的所有元素
+        while (parent.hasChildNodes()) {
+            parent.removeChild(parent.childNodes[0]);
+        }
+
+        //创建file input,根据传回的num
+        for (var i = 0; i < num ; i++) {
+            var input = document.createElement("input");
+            input.setAttribute("type", "file");
+            input.setAttribute("name", "file");
+            parent.appendChild(input);
         }
     }
 </script>

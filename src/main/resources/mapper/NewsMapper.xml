@@ -16,6 +16,7 @@
     <result column="category_title" jdbcType="VARCHAR" property="categoryTitle" />
     <result column="news_date" jdbcType="TIMESTAMP" property="newsDate" />
     <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
+    <result column="news_recommend_top" jdbcType="BIT" property="newsRecommendTop" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mindnode.immipal.pojo.News">
     <result column="news_content" jdbcType="LONGVARCHAR" property="newsContent" />
@@ -81,7 +82,7 @@
   <sql id="Base_Column_List">
     news_id, category_id, news_title, news_author, news_translator, news_create_time, 
     show_img_urls, show_img_count, news_top, has_video, recommend, category_title, news_date, 
-    video_url
+    video_url, news_recommend_top
   </sql>
   <sql id="Blob_Column_List">
     news_content
@@ -147,14 +148,14 @@
       news_author, news_translator, news_create_time, 
       show_img_urls, show_img_count, news_top, 
       has_video, recommend, category_title, 
-      news_date, video_url, news_content
-      )
+      news_date, video_url, news_recommend_top, 
+      news_content)
     values (#{newsId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{newsTitle,jdbcType=VARCHAR}, 
       #{newsAuthor,jdbcType=VARCHAR}, #{newsTranslator,jdbcType=VARCHAR}, #{newsCreateTime,jdbcType=BIGINT}, 
       #{showImgUrls,jdbcType=VARCHAR}, #{showImgCount,jdbcType=INTEGER}, #{newsTop,jdbcType=BIT}, 
       #{hasVideo,jdbcType=BIT}, #{recommend,jdbcType=BIT}, #{categoryTitle,jdbcType=VARCHAR}, 
-      #{newsDate,jdbcType=TIMESTAMP}, #{videoUrl,jdbcType=VARCHAR}, #{newsContent,jdbcType=LONGVARCHAR}
-      )
+      #{newsDate,jdbcType=TIMESTAMP}, #{videoUrl,jdbcType=VARCHAR}, #{newsRecommendTop,jdbcType=BIT}, 
+      #{newsContent,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.mindnode.immipal.pojo.News">
     insert into news
@@ -200,6 +201,9 @@
       </if>
       <if test="videoUrl != null">
         video_url,
+      </if>
+      <if test="newsRecommendTop != null">
+        news_recommend_top,
       </if>
       <if test="newsContent != null">
         news_content,
@@ -247,6 +251,9 @@
       </if>
       <if test="videoUrl != null">
         #{videoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="newsRecommendTop != null">
+        #{newsRecommendTop,jdbcType=BIT},
       </if>
       <if test="newsContent != null">
         #{newsContent,jdbcType=LONGVARCHAR},
@@ -304,6 +311,9 @@
       <if test="record.videoUrl != null">
         video_url = #{record.videoUrl,jdbcType=VARCHAR},
       </if>
+      <if test="record.newsRecommendTop != null">
+        news_recommend_top = #{record.newsRecommendTop,jdbcType=BIT},
+      </if>
       <if test="record.newsContent != null">
         news_content = #{record.newsContent,jdbcType=LONGVARCHAR},
       </if>
@@ -328,6 +338,7 @@
       category_title = #{record.categoryTitle,jdbcType=VARCHAR},
       news_date = #{record.newsDate,jdbcType=TIMESTAMP},
       video_url = #{record.videoUrl,jdbcType=VARCHAR},
+      news_recommend_top = #{record.newsRecommendTop,jdbcType=BIT},
       news_content = #{record.newsContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -348,7 +359,8 @@
       recommend = #{record.recommend,jdbcType=BIT},
       category_title = #{record.categoryTitle,jdbcType=VARCHAR},
       news_date = #{record.newsDate,jdbcType=TIMESTAMP},
-      video_url = #{record.videoUrl,jdbcType=VARCHAR}
+      video_url = #{record.videoUrl,jdbcType=VARCHAR},
+      news_recommend_top = #{record.newsRecommendTop,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -395,6 +407,9 @@
       <if test="videoUrl != null">
         video_url = #{videoUrl,jdbcType=VARCHAR},
       </if>
+      <if test="newsRecommendTop != null">
+        news_recommend_top = #{newsRecommendTop,jdbcType=BIT},
+      </if>
       <if test="newsContent != null">
         news_content = #{newsContent,jdbcType=LONGVARCHAR},
       </if>
@@ -416,6 +431,7 @@
       category_title = #{categoryTitle,jdbcType=VARCHAR},
       news_date = #{newsDate,jdbcType=TIMESTAMP},
       video_url = #{videoUrl,jdbcType=VARCHAR},
+      news_recommend_top = #{newsRecommendTop,jdbcType=BIT},
       news_content = #{newsContent,jdbcType=LONGVARCHAR}
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
@@ -433,7 +449,8 @@
       recommend = #{recommend,jdbcType=BIT},
       category_title = #{categoryTitle,jdbcType=VARCHAR},
       news_date = #{newsDate,jdbcType=TIMESTAMP},
-      video_url = #{videoUrl,jdbcType=VARCHAR}
+      video_url = #{videoUrl,jdbcType=VARCHAR},
+      news_recommend_top = #{newsRecommendTop,jdbcType=BIT}
     where news_id = #{newsId,jdbcType=INTEGER}
   </update>
 </mapper>

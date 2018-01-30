@@ -2,8 +2,6 @@ package com.mindnode.immipal.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class CategoryController {
+    private final int PAGE_SIZE = 10;
     @Autowired
     CategoryService categoryService;
 
@@ -35,19 +34,12 @@ public class CategoryController {
     public String listCategory(Integer pageNum, Model model) {
         //在你需要进行分页的 MyBatis 查询方法前调用 PageHelper.startPage 静态方法即可，
         //紧跟在这个方法后的第一个MyBatis 查询方法会被进行分页。
-        final int pageSize = 10;
-
         if (pageNum==null) {
-            PageHelper.startPage(1, pageSize);
+            PageHelper.startPage(1, PAGE_SIZE);
         } else {
-            PageHelper.startPage(pageNum, pageSize);
+            PageHelper.startPage(pageNum, PAGE_SIZE);
         }
-        List<Category> categoryList = null;
-        try {
-            categoryList = categoryService.listAll();
-        } catch (NullListException e) {
-            model.addAttribute("message", e.getMessage());
-        }
+        List<Category> categoryList = categoryService.listAll();
 
         model.addAttribute("categoryList", categoryList);
 
@@ -77,11 +69,9 @@ public class CategoryController {
      */
     @RequestMapping(value = "/admin_category_edit_page", method = RequestMethod.GET)
     public String editCategoryPage(Integer categoryId, Model model) {
-        try {
-            model.addAttribute("category", categoryService.get(categoryId));
-        } catch (NullObjectException e) {
-            model.addAttribute("message", e.getMessage());
-        }
+
+        model.addAttribute("category", categoryService.get(categoryId));
+
         return "admin/edit/editCategory";
     }
 

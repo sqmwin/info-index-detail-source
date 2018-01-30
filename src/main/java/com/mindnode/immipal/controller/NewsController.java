@@ -3,7 +3,6 @@ package com.mindnode.immipal.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.exception.upload.FileUploadException;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.pojo.News;
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+// import org.springframework.web.bind.annotation.RequestMethod;
+
 /**
  * 后台-新闻管理
  *
@@ -37,7 +38,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class NewsController {
-    private final int PAGE_SIZE = 5;
+    private final int PAGE_SIZE = 10;
 
     private final String REDIRECT_NEWS_LIST = "redirect:/admin/admin_news_list";
     private final String REDIRECT_RECOMMEND_NEWS_LIST = "redirect:/admin/admin_news_list_recommend";
@@ -191,11 +192,14 @@ public class NewsController {
             String categoryTitle = category.getCategoryTitle();
             news.setCategoryTitle(categoryTitle);
 
-            //设定其创建时间：包括时间信息及毫秒值
+            //设定其创建时间：包括时间信息及毫秒值;设定置顶与推荐的初始值
             final long nowLong = System.currentTimeMillis();
             final Date nowDate = new Date(nowLong);
             news.setNewsCreateTime(nowLong);
             news.setNewsDate(nowDate);
+            news.setNewsTop(false);
+            news.setRecommend(false);
+            news.setNewsRecommendTop(false);
             // 判断是否有上传文件
             if (file.length == 0) {
                 model.addAttribute("message", "请上传展示图片");
@@ -261,6 +265,7 @@ public class NewsController {
     @RequestMapping(value = "/admin_news_edit", method = RequestMethod.POST)
     public String editNews(HttpSession session,
                            News news,
+                           String content,
                            MultipartFile[] file,
                            String hasVideoOption,
                            String reUploadVideo,
@@ -273,6 +278,14 @@ public class NewsController {
             Category category = categoryService.get(news.getCategoryId());
             String categoryTitle = category.getCategoryTitle();
             news.setCategoryTitle(categoryTitle);
+
+            //设置新闻未被分配的属性
+            news.setNewsContent(content);
+            news.setNewsDate(originalNews.getNewsDate());
+            news.setNewsCreateTime(originalNews.getNewsCreateTime());
+            news.setNewsTop(originalNews.getNewsTop());
+            news.setRecommend(originalNews.getRecommend());
+            news.setNewsRecommendTop(originalNews.getNewsRecommendTop());
 
             final String yes = "yes";
             final String no = "no";
@@ -335,7 +348,9 @@ public class NewsController {
                         }
                     }
                 }
-            } else if (reUploadVideo.equals(no)) {
+            }
+            //不更改视频
+            else if (reUploadVideo.equals(no)) {
                 news.setHasVideo(originalNews.getHasVideo());
                 news.setVideoUrl(originalNews.getVideoUrl());
                 if (reUploadPic.equals(yes)) {
@@ -355,15 +370,14 @@ public class NewsController {
                             }
                         }
                     }
-                } else if (reUploadPic.equals(no)) {
+                }
+                //不上传图片
+                else if (reUploadPic.equals(no)) {
                     news.setShowImgCount(originalNews.getShowImgCount());
                     news.setShowImgUrls(originalNews.getShowImgUrls());
                 }
             }
-            news.setNewsDate(originalNews.getNewsDate());
-            news.setNewsCreateTime(originalNews.getNewsCreateTime());
-            news.setNewsTop(originalNews.getNewsTop());
-            news.setRecommend(originalNews.getRecommend());
+
             //最终都要新增入数据库
             newsService.update(news);
         }catch (Exception e) {
@@ -387,13 +401,9 @@ public class NewsController {
      */
     @RequestMapping(value = "/admin_news_recommend", method = RequestMethod.GET)
     public String recommendNews(Integer newsId,Model model) {
-        try {
-            News news = newsService.getByNewsId(newsId);
-            news.setRecommend(true);
-            newsService.update(news);
-        } catch (NullObjectException e) {
-            model.addAttribute("message", e.getMessage());
-        }
+        News news = newsService.getByNewsId(newsId);
+        news.setRecommend(true);
+        newsService.update(news);
         return REDIRECT_NEWS_LIST;
     }
 
@@ -402,13 +412,11 @@ public class NewsController {
      */
     @RequestMapping(value = "/admin_news_recommend_cancel", method = RequestMethod.GET)
     public String cancelRecommendNews(Integer newsId,Model model) {
-        try {
-            News news = newsService.getByNewsId(newsId);
-            news.setRecommend(false);
-            newsService.update(news);
-        } catch (NullObjectException e) {
-            model.addAttribute("message", e.getMessage());
-        }
+        News news = newsService.getByNewsId(newsId);
+        news.setRecommend(false);
+        //没有了推荐自然也不会在推荐中置顶
+        news.setNewsRecommendTop(false);
+        newsService.update(news);
         return REDIRECT_NEWS_LIST;
     }
 
@@ -419,7 +427,7 @@ public class NewsController {
     public String topNews(Integer newsId,Model model) {
         try {
             News news = newsService.getByNewsId(newsId);
-            List<News> topNewsList = newsService.listByCategoryId(news.getCategoryId());
+            List<News> topNewsList = newsService.listByNewsTopTrueAndCategoryId(news.getCategoryId());
             if (topNewsList != null) {
                 for (News topNews : topNewsList) {
                     topNews.setNewsTop(false);
@@ -428,7 +436,6 @@ public class NewsController {
             }
             news.setNewsTop(true);
             newsService.update(news);
-            return REDIRECT_NEWS_LIST_BY_CATEGORY_ID + "?categoryId=" + news.getCategoryId();
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -438,20 +445,51 @@ public class NewsController {
     /**取消置顶*/
     @RequestMapping(value = "/admin_news_top_cancel",method = RequestMethod.GET)
     public String cancelTopNews(Integer newsId,Model model) {
+
+        News news = newsService.getByNewsId(newsId);
+        news.setNewsTop(false);
+        newsService.update(news);
+        return REDIRECT_NEWS_LIST;
+    }
+
+    /**
+     * 设为推荐置顶
+     */
+    @RequestMapping(value = "/admin_news_recommend_top", method = RequestMethod.GET)
+    public String topRecommendNews(Integer newsId, Model model) {
         try {
             News news = newsService.getByNewsId(newsId);
-            news.setNewsTop(false);
+            List<News> recommendTopNewsList = newsService.listByNewsRecommendTopTrue();
+            if (recommendTopNewsList != null) {
+                for (News recommendTopNews : recommendTopNewsList) {
+                    recommendTopNews.setNewsRecommendTop(false);
+                    newsService.update(recommendTopNews);
+                }
+            }
+            //推荐置顶前推荐肯定是true
+            news.setRecommend(true);
+            news.setNewsRecommendTop(true);
             newsService.update(news);
-            return REDIRECT_NEWS_LIST_BY_CATEGORY_ID + "?categoryId=" + news.getCategoryId();
-        } catch (NullObjectException e) {
+        } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
         return REDIRECT_NEWS_LIST;
     }
 
+    /**
+     * 取消推荐置顶
+     */
+    @RequestMapping(value = "/admin_news_recommend_top_cancel", method = RequestMethod.GET)
+    public String cancelTopRecommendNews(Integer newsId, Model model) {
+        News news = newsService.getByNewsId(newsId);
+        news.setNewsRecommendTop(false);
+        newsService.update(news);
+        return REDIRECT_NEWS_LIST;
+    }
 
     /**上传图片，并将图片地址存入数据库，并返回图片地址*/
     private String uploadPicAndSetPicDB(HttpSession session, MultipartFile multipartFile) throws IOException, FileUploadException {
+
         String imgUrl = FileUpLoad.uploadPic(session, multipartFile);
         //新增Pic
         Pic pic = new Pic();

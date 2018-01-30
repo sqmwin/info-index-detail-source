@@ -1,7 +1,5 @@
 package com.mindnode.immipal.service;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Video;
 
 import java.util.List;
@@ -16,8 +14,8 @@ public interface VideoService {
 
     void delete(int videoId);
 
-    Video get(int videoId) throws NullObjectException;
+    Video get(int videoId);
 
-    List<Video> listAll() throws NullListException;
+    List<Video> listAll();
 
 }

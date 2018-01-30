@@ -10,7 +10,7 @@
 
 <%@include file="../../include/head/head-top.jsp"%>
 
-<title>新增新闻页面</title>
+<title>编辑新闻页面</title>
 
 <%@include file="../../include/head/head-bottom.jsp"%>
 
@@ -142,12 +142,12 @@
                 </div>
                 </div>
                 <div class="form-group">
-                    <label for="newsContent" class="col-sm-3 control-label">新闻内容</label>
+                    <label for="content" class="col-sm-3 control-label">新闻内容</label>
                     <div class="col-sm-8">
                         <div id="editor">
                             ${news.newsContent}
                         </div>
-                        <textarea class="form-control" id="newsContent" name="newsContent" style="display:none"></textarea>
+                        <textarea class="form-control" id="content" name="content" style="display:none"></textarea>
                     </div>
                 </div>
 
@@ -199,14 +199,14 @@
         'code'  // 插入代码
     ];
     //获取此编辑框的textarea
-    var $newsContent = $('#newsContent');
+    var $content = $('#content');
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
-        $newsContent.val(html)
+        $content.val(html)
     };
     //上传图片
     //图片上传接口路径
-    var path = "http://127.0.0.1:8080" + "${pageContext.request.contextPath}/admin/admin_upload_pic";
+    var path = "${pageContext.request.contextPath}/file/upload_pic";
     editor.customConfig.uploadImgServer = path;
     editor.customConfig.uploadImgMaxSize = 1.5 * 1024 * 1024; //限制上传图片的大小
     editor.customConfig.uploadImgMaxLength = 1; //限制一次上传图片的数量
@@ -258,7 +258,7 @@
     };
     editor.create();
     // 初始化 textarea 的值
-    $newsContent.val(editor.txt.html())
+    $content.val(editor.txt.html());
 </script>
 
 <script type="text/javascript">

@@ -1,7 +1,5 @@
 package com.mindnode.immipal.service;
 
-import com.mindnode.immipal.exception.list.NullListException;
-import com.mindnode.immipal.exception.object.NullObjectException;
 import com.mindnode.immipal.pojo.Pic;
 
 import java.util.List;
@@ -16,7 +14,7 @@ public interface PicService {
 
     void delete(int picId);
 
-    Pic get(int picId) throws NullObjectException;
+    Pic get(int picId);
 
-    List<Pic> listAll() throws NullListException;
+    List<Pic> listAll();
 }

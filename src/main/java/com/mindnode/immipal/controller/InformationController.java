@@ -2,8 +2,6 @@ package com.mindnode.immipal.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.mindnode.immipal.exception.list.NullListException;
 import com.mindnode.immipal.pojo.Ad;
 import com.mindnode.immipal.pojo.Category;
 import com.mindnode.immipal.pojo.News;
@@ -11,9 +9,9 @@ import com.mindnode.immipal.service.AdService;
 import com.mindnode.immipal.service.CategoryService;
 import com.mindnode.immipal.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +26,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2018/1/26
  */
-@Controller
-@RequestMapping("")
+@RestController
 public class InformationController {
     private final int PAGE_SIZE = 10;
     @Autowired
@@ -48,11 +45,8 @@ public class InformationController {
         Map<String, Object> data = new HashMap<>(2);
 
         List<Category> categoryList = null;
-        try {
-            categoryList = categoryService.listAllOrderByLevel();
-        } catch (NullListException e) {
-            data.put("message", e.getMessage());
-        }
+
+        categoryList = categoryService.listAllOrderByLevel();
 
         data.put("categoryList", categoryList);
 
@@ -85,10 +79,10 @@ public class InformationController {
         data.put("ad", ad);
         data.put("newsList", newsList);
 
-        if (newsList != null) {
-            PageInfo<News> pageInfo = new PageInfo<>(newsList);
-            data.put("pageInfo", pageInfo);
-        }
+        // if (newsList != null) {
+        //     PageInfo<News> pageInfo = new PageInfo<>(newsList);
+        //     data.put("pageInfo", pageInfo);
+        // }
         return JSON.toJSONString(data);
     }
 
@@ -117,10 +111,10 @@ public class InformationController {
         data.put("ad", ad);
         data.put("newsList", newsList);
 
-        if (newsList != null) {
-            PageInfo<News> pageInfo = new PageInfo<>(newsList);
-            data.put("pageInfo", pageInfo);
-        }
+        // if (newsList != null) {
+        //     PageInfo<News> pageInfo = new PageInfo<>(newsList);
+        //     data.put("pageInfo", pageInfo);
+        // }
         return JSON.toJSONString(data);
     }
 
@@ -150,10 +144,10 @@ public class InformationController {
         data.put("ad", ad);
         data.put("newsList", newsList);
 
-        if (newsList != null) {
-            PageInfo<News> pageInfo = new PageInfo<>(newsList);
-            data.put("pageInfo", pageInfo);
-        }
+        // if (newsList != null) {
+        //     PageInfo<News> pageInfo = new PageInfo<>(newsList);
+        //     data.put("pageInfo", pageInfo);
+        // }
         return JSON.toJSONString(data);
     }
 

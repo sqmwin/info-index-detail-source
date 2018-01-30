@@ -1396,68 +1396,73 @@
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="327" parent="241" name="PRIMARY">
+    <column id="327" parent="241" name="news_recommend_top">
+      <Position>16</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="328" parent="241" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>news_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="328" parent="242" name="pic_id">
+    <column id="329" parent="242" name="pic_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="329" parent="242" name="pic_url">
+    <column id="330" parent="242" name="pic_url">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="330" parent="242" name="PRIMARY">
+    <key id="331" parent="242" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>pic_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="331" parent="243" name="user_id">
+    <column id="332" parent="243" name="user_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="332" parent="243" name="user_username">
+    <column id="333" parent="243" name="user_username">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="333" parent="243" name="user_password">
+    <column id="334" parent="243" name="user_password">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="334" parent="243" name="user_nickname">
+    <column id="335" parent="243" name="user_nickname">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="335" parent="243" name="PRIMARY">
+    <key id="336" parent="243" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="336" parent="244" name="video_id">
+    <column id="337" parent="244" name="video_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="337" parent="244" name="video_url">
+    <column id="338" parent="244" name="video_url">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="338" parent="244" name="PRIMARY">
+    <key id="339" parent="244" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>video_id</ColNames>
       <Primary>1</Primary>

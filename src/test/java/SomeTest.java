@@ -62,5 +62,13 @@ public class SomeTest {
         System.out.println(TimeUtil.toLocalString(System.currentTimeMillis()));
     }
 
-
+    @Test
+    public void listTest() {
+        List<String> strings = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            String string = "abcdefcg";
+            strings.add(string);
+        }
+        System.out.println(strings.toString());
+    }
 }
