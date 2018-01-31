@@ -18,6 +18,5 @@
 <!--------------------------
 | Your Page Content Here |
 -------------------------->
-home
-${message}
+
 <%@include file="../include/body/body-bottom.jsp"%>

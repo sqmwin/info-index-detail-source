@@ -393,6 +393,66 @@ public class UserExample {
             addCriterion("user_nickname not between", value1, value2, "userNickname");
             return (Criteria) this;
         }
+
+        public Criteria andUserLevelIsNull() {
+            addCriterion("user_level is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelIsNotNull() {
+            addCriterion("user_level is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelEqualTo(Integer value) {
+            addCriterion("user_level =", value, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelNotEqualTo(Integer value) {
+            addCriterion("user_level <>", value, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelGreaterThan(Integer value) {
+            addCriterion("user_level >", value, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelGreaterThanOrEqualTo(Integer value) {
+            addCriterion("user_level >=", value, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelLessThan(Integer value) {
+            addCriterion("user_level <", value, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelLessThanOrEqualTo(Integer value) {
+            addCriterion("user_level <=", value, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelIn(List<Integer> values) {
+            addCriterion("user_level in", values, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelNotIn(List<Integer> values) {
+            addCriterion("user_level not in", values, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelBetween(Integer value1, Integer value2) {
+            addCriterion("user_level between", value1, value2, "userLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserLevelNotBetween(Integer value1, Integer value2) {
+            addCriterion("user_level not between", value1, value2, "userLevel");
+            return (Criteria) this;
+        }
     }
 
     /**

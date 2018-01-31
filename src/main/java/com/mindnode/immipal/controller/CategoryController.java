@@ -20,9 +20,10 @@ import java.util.List;
  * @date 2018/1/26
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/category")
 public class CategoryController {
     private final int PAGE_SIZE = 10;
+    private final String REDIRECT_CATEGORY_LIST = "redirect:/admin/category/admin_category_list";
     @Autowired
     CategoryService categoryService;
 
@@ -57,10 +58,10 @@ public class CategoryController {
         String nothing = "";
         if (category.getCategoryTitle().equals(nothing)) {
             model.addAttribute("message", "栏目名不能为空");
-            return "redirect:/admin/admin_category_list";
+            return REDIRECT_CATEGORY_LIST;
         }
         categoryService.add(category);
-        return "redirect:/admin/admin_category_list";
+        return REDIRECT_CATEGORY_LIST;
 
     }
 
@@ -81,7 +82,7 @@ public class CategoryController {
     @RequestMapping(value = "/admin_category_edit", method = RequestMethod.POST)
     public String editCategory(Category category) {
         categoryService.update(category);
-        return "redirect:/admin/admin_category_list";
+        return REDIRECT_CATEGORY_LIST;
     }
 
     /**
@@ -90,6 +91,6 @@ public class CategoryController {
     @RequestMapping(value = "/admin_category_delete", method = RequestMethod.GET)
     public String deleteCategory(Integer categoryId) {
         categoryService.delete(categoryId);
-        return "redirect:/admin/admin_category_list";
+        return REDIRECT_CATEGORY_LIST;
     }
 }

@@ -21,7 +21,7 @@
     <div class="login-box-body">
         <p class="login-box-msg"><b>登陆</b></p>
 
-        <form action="${pageContext.request.contextPath}/admin/admin_user_login/" method="post">
+        <form action="${pageContext.request.contextPath}/admin/user/admin_user_login/" method="post">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" placeholder="登录名" name="userUsername">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>

@@ -14,6 +14,8 @@ public class User implements Serializable {
 
     private String userNickname;
 
+    private Integer userLevel;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getUserId() {
@@ -48,6 +50,14 @@ public class User implements Serializable {
         this.userNickname = userNickname;
     }
 
+    public Integer getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(Integer userLevel) {
+        this.userLevel = userLevel;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -63,7 +73,8 @@ public class User implements Serializable {
         return (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getUserUsername() == null ? other.getUserUsername() == null : this.getUserUsername().equals(other.getUserUsername()))
             && (this.getUserPassword() == null ? other.getUserPassword() == null : this.getUserPassword().equals(other.getUserPassword()))
-            && (this.getUserNickname() == null ? other.getUserNickname() == null : this.getUserNickname().equals(other.getUserNickname()));
+            && (this.getUserNickname() == null ? other.getUserNickname() == null : this.getUserNickname().equals(other.getUserNickname()))
+            && (this.getUserLevel() == null ? other.getUserLevel() == null : this.getUserLevel().equals(other.getUserLevel()));
     }
 
     @Override
@@ -74,6 +85,7 @@ public class User implements Serializable {
         result = prime * result + ((getUserUsername() == null) ? 0 : getUserUsername().hashCode());
         result = prime * result + ((getUserPassword() == null) ? 0 : getUserPassword().hashCode());
         result = prime * result + ((getUserNickname() == null) ? 0 : getUserNickname().hashCode());
+        result = prime * result + ((getUserLevel() == null) ? 0 : getUserLevel().hashCode());
         return result;
     }
 
@@ -87,6 +99,7 @@ public class User implements Serializable {
         sb.append(", userUsername=").append(userUsername);
         sb.append(", userPassword=").append(userPassword);
         sb.append(", userNickname=").append(userNickname);
+        sb.append(", userLevel=").append(userLevel);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

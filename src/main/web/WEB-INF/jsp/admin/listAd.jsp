@@ -44,22 +44,22 @@
                                 <th class="sorting_asc" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-sort="ascending">
                                     广告ID
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" >
+                                <th class="sorting col-md-3" tabindex="0" aria-controls="table" rowspan="1" colspan="1" >
                                     广告标题
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" >
+                                <th class="sorting col-md-2" tabindex="0" aria-controls="table" rowspan="1" colspan="1" >
                                     创建时间
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1">
+                                <th class="sorting col-md-1" tabindex="0" aria-controls="table" rowspan="1" colspan="1">
                                     广告图片路径
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1">
+                                <th class="sorting col-md-3" tabindex="0" aria-controls="table" rowspan="1" colspan="1">
                                     广告链接
                                 </th>
                                 <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1">
                                     广告等级
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" >
+                                <th class="sorting col-md-2" tabindex="0" aria-controls="table" rowspan="1" colspan="1" >
                                     广告操作
                                 </th>
                             </tr>
@@ -72,22 +72,28 @@
                                     <td class="sorting_1">${a.adId}</td>
                                     <td>${a.adTitle}</td>
                                     <td><fmt:formatDate value="${a.adDate}" pattern="yyyy年MM月dd日 HH:mm:ss"/></td>
-                                    <td>${a.adImgUrl}</td>
+                                    <td>
+                                        <img src="${a.adImgUrl}" alt="广告图片" height="100px" width="160px">
+                                    </td>
                                     <td>${a.adLink}</td>
                                     <td>${a.adLevel}</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_edit_page?adId=${a.adId}'">编辑广告</button>
-                                        <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_delete?adId=${a.adId}'">删除广告</button>
+                                        <div class="col-md-6">
+                                            <button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/ad/admin_ad_edit_page?adId=${a.adId}'">编辑广告</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/ad/admin_ad_delete?adId=${a.adId}'">删除广告</button>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
 
                             </tbody>
-                            <form action="${pageContext.request.contextPath}/admin/admin_ad_add" method="post" enctype="multipart/form-data">
+                            <form action="${pageContext.request.contextPath}/admin/ad/admin_ad_add" method="post" enctype="multipart/form-data">
                                 <tfoot>
                                 <tr>
                                     <th rowspan="1" colspan="1">
-                                        <button type="submit" class="btn bg-navy btn-sm pull-left">新增广告</button>
+                                        <button type="submit" class="btn bg-navy btn-sm col-md-12">新增广告</button>
                                     </th>
                                     <th rowspan="1" colspan="1">
                                         <input type="text" name="adTitle" placeholder="广告标题">
@@ -96,12 +102,13 @@
                                         创建时间自动生成
                                     </th>
                                     <th rowspan="1" colspan="1">
-                                        上传广告图片
-                                        <input type="file" name="file">
+                                        <div class="col-md-4">上传广告图片:</div>
+                                        <div class="col-md-8"><input type="file" name="file"></div>
                                     </th>
                                     <th rowspan="1" colspan="1">
-                                        广告地址
-                                        <input type="text" name="adLink" placeholder="http://">
+                                        <div class="col-md-4">广告地址</div>
+                                        <div class="col-md-8"><input type="text" name="adLink" placeholder="http://" value="http://"></div>
+
                                     </th>
                                     <th rowspan="1" colspan="1">
                                         <div class="form-group">
@@ -119,7 +126,7 @@
                                         </div>
                                     </th>
                                     <th rowspan="1" colspan="1">
-                                        <button type="submit" class="btn bg-navy btn-sm pull-left" >新增广告</button>
+                                        <button type="submit" class="btn bg-navy btn-sm col-md-12" >新增广告</button>
                                     </th>
                                 </tr>
                                 </tfoot>
@@ -128,13 +135,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">广告等级：1为最大，9为最小，等级越高在资讯页的排列越靠前</div>
                     </div>
-
-
+                </div>
+                <div class="row col-sm-12 col-md-12">
                     <%@include file="../include/body/paginate.jsp"%>
-
                 </div>
             </div>
         </div>

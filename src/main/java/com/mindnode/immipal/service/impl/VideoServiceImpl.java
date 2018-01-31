@@ -37,4 +37,11 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> listAll(){
         return  videoMapper.selectByExample(new VideoExample());
     }
+
+    @Override
+    public List<Video> listByNewsId(int newsId) {
+        VideoExample example = new VideoExample();
+        example.createCriteria().andNewsIdEqualTo(newsId);
+        return videoMapper.selectByExample(example);
+    }
 }

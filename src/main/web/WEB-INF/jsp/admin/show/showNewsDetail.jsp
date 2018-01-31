@@ -7,10 +7,11 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%@include file="../../include/head/head-top.jsp"%>
 
-<title>新增新闻页面</title>
+<title>新闻详情页面</title>
 
 <%@include file="../../include/head/head-bottom.jsp"%>
 
@@ -23,110 +24,48 @@
 <div class="col-md-12">
     <div class="box box-info">
         <div class="box-header with-border">
-            <h3 class="box-title">新增新闻</h3>
+            <h3 class="box-title">新闻详情页面</h3>
             <h3 class="box-title alert-message">${message}</h3>
         </div>
         <!-- /.box-header -->
-        <!-- form start -->
-        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_news_add" enctype="multipart/form-data">
-            <div class="box-body">
-                <div class="form-group">
-                    <label for="newsId" class="col-sm-3 control-label">新闻ID</label>
-                    <div class="col-sm-4">
-                        <input type="number" class="form-control" id="newsId" placeholder="新闻ID自动生成" disabled/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="categoryId" class="col-sm-3 control-label">新闻所属分类</label>
-                    <div class="col-sm-4">
-                    <select class="form-control" id="categoryId" name="categoryId">
-                        <c:forEach items="${categoryList}" var="c">
-                            <option value="${c.categoryId}">${c.categoryTitle}</option>
-                        </c:forEach>
-                    </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newsTitle" class="col-sm-3 control-label">新闻标题</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="newsTitle" placeholder="新闻标题" name="newsTitle"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newsAuthor" class="col-sm-3 control-label">新闻作者</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="newsAuthor" placeholder="新闻作者" name="newsAuthor"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newsTranslator" class="col-sm-3 control-label">新闻翻译</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="newsTranslator" placeholder="新闻翻译" name="newsTranslator"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">新闻是否包含视频</label>
-                    <div class="col-sm-6">
-                        <!-- 是否有视频，若有视频提供上传视频框 -->
-                        <p class="col-sm-3 control-label text-left">
-                            <input type="radio" name="hasVideoOption" class="iradio_flat-blue" value="no" checked onclick="uploadVideo(false)">
-                            无
-                        </p>
-                        <p class="col-sm-3 control-label">
-                            <input type="radio" name="hasVideoOption" class="iradio_flat-blue" value="yes" onclick="uploadVideo(true)">
-                            有
-                        </p>
-                        <br/><br/>
-                        <div class="help-block">若有视频只需在"新闻展示图片张数"中选择"一张"作为视频展示图片<br/>(若选择"两张"或"三张"，第二张和第三张图片无法在新闻列表中展示)</div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">新闻视频</label>
-                    <div class="col-sm-8" id="uploadVideo">
-                    </div>
-                </div>
-                <!-- radio -->
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">新闻展示图片张数</label>
-                    <div class="col-sm-6">
-                        <p class="col-sm-3 control-label">
-                            <input type="radio" name="showImgCount" class="iradio_flat-blue" value="1" checked onclick="uploadPic(1)">
-                            一张
-                        </p>
-                        <p class="col-sm-3 control-label">
-                            <input type="radio" name="showImgCount" class="iradio_flat-blue" value="2" onclick="uploadPic(2)">
-                            两张
-                        </p>
-                        <p class="col-sm-3 control-label">
-                            <input type="radio" name="showImgCount" class="iradio_flat-blue" value="3" onclick="uploadPic(3)">
-                            三张
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label">上传新闻展示图片</label>
-                    <div class="col-sm-6" id="uploadDiv">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="newsContent" class="col-sm-3 control-label">新闻内容</label>
-                    <div class="col-sm-8">
-                        <div id="editor"></div>
-                        <textarea class="form-control" id="newsContent" name="newsContent" style="display:none"></textarea>
-                    </div>
-                </div>
-
+        <div class="box-body">
+            <div class="row col-md-12">
+                <c:choose>
+                    <c:when test="${news.videoUrl != '' && news.videoUrl != null}">
+                            <video src="${news.videoUrl}" controls="controls"  width="320px" height="200px"></video>
+                    </c:when>
+                    <c:otherwise> </c:otherwise>
+                </c:choose>
             </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-
-
-                <button type="submit" class="btn btn-info pull-right">提交</button>
-
-                <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_list'" class="btn btn-default">取消</button>
+            <div class="row col-md-12">
+                <h3 class="box-title">新闻标题：${news.newsTitle}</h3>
             </div>
-            <!-- /.box-footer -->
-        </form>
+            <div class="row ">
+                <div class="col-md-4">
+                    创建时间：<fmt:formatDate value="${news.newsDate}" pattern="yyyy-MM-dd"/>
+                </div>
+                <div class="col-md-4">
+                    作者(来源):${news.newsAuthor}
+                </div>
+                <div class="col-md-4">
+                    编译:${news.newsTranslator}
+                </div>
+            </div>
+            <div class="row col-md-12">
+                新闻内容
+            </div>
+            <div class="row col-md-12">
+                ${news.newsContent}
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row col-md-12">
+                <button type="button" class="btn btn-default btn-sm col-md-3"
+                        onclick="location.href='${pageContext.request.contextPath}/admin/news/admin_news_list'">返回</button>
+                <button type="button" class="btn btn-info btn-sm col-md-3 pull-right"
+                        onclick="location.href='${pageContext.request.contextPath}/admin/news/admin_news_edit_page?newsId=${news.newsId}'">修改新闻</button>
+            </div>
+        </div>
     </div>
     <!-- /.box -->
 </div>

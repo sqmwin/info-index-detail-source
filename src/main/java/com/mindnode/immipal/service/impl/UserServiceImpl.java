@@ -1,6 +1,7 @@
 package com.mindnode.immipal.service.impl;
 
 import com.mindnode.immipal.exception.user.ChangePasswordException;
+import com.mindnode.immipal.exception.user.UserException;
 import com.mindnode.immipal.exception.user.WrongUserInformationException;
 import com.mindnode.immipal.mapper.UserMapper;
 import com.mindnode.immipal.pojo.User;
@@ -83,11 +84,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void add(User user) {
-        String password = user.getUserPassword();
-        String password2MD5Code = Md5Util.getMD5(password);
-        user.setUserPassword(password2MD5Code);
-        userMapper.insert(user);
+    public void add(User user,String password,String ensure) throws UserException {
+        int minLength = 5;
+        int maxLength = 16;
+        String username = user.getUserUsername();
+        int usernameLength = username.length();
+        int passwordLength = password.length();
+        boolean blankUsername = username.equals(EMPTY);
+        boolean blankPassword = password.equals(EMPTY);
+        boolean blankEnsure = password.equals(EMPTY);
+        boolean right = !blankUsername && !blankPassword && password.equals(ensure) && usernameLength >= 5 && usernameLength <= 16 && passwordLength >= 5 && passwordLength <= 16;
+        // 判断用户名是否为空
+        if (blankUsername) {
+            throw new UserException("用户名不能为空");
+        }
+        //判断用户名长度
+        else if (username.length() < minLength) {
+            throw new UserException("用户名不能少于5位");
+        }
+        else if (username.length() > maxLength) {
+            throw new UserException("用户名不能大于16位");
+        }
+        //判断密码是否为空
+        else if (blankPassword && blankEnsure) {
+            throw new UserException("密码不能为空");
+        }
+        //判断密码是否与确认密码相同
+        else if (!password.equals(ensure)) {
+            throw new UserException("密码与确认密码不同");
+        }
+        //判断密码长度
+        else if (password.length() < minLength) {
+            throw new UserException("密码长度不能少于5位");
+        }
+        else if (password.length() > maxLength) {
+            throw new UserException("密码长度不能大于16位");
+        }
+        //用户名和密码都符合要求的情况下
+        else if (right){
+            String password2MD5Code = Md5Util.getMD5(password);
+            user.setUserPassword(password2MD5Code);
+            userMapper.insert(user);
+        }
     }
 
     @Override

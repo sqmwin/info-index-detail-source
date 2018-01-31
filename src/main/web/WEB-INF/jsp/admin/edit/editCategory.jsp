@@ -28,7 +28,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_category_edit">
+        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/category/admin_category_edit">
             <div class="box-body">
                 <div class="form-group">
                     <label for="categoryId" class="col-sm-3 control-label">导航条栏目ID</label>
@@ -71,11 +71,11 @@
                 <button type="submit" class="btn btn-info pull-right">提交修改</button>
                 <input type="hidden" name="categoryId" value="${category.categoryId}">
 
-        </form>
-                <button onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_list'" class="btn btn-default">取消修改</button>
+
+                <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/category/admin_category_list'" class="btn btn-default">取消修改</button>
             </div>
             <!-- /.box-footer -->
-
+        </form>
     </div>
     <!-- /.box -->
 </div>

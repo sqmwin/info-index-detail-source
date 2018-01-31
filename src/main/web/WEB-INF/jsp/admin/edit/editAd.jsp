@@ -95,11 +95,10 @@
                 <button type="submit" class="btn btn-info pull-right">提交修改</button>
                 <input type="hidden" name="adId" value="${ad.adId}">
 
-        </form>
-        <button onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_list'" class="btn btn-default">取消修改</button>
+        <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/admin_ad_list'" class="btn btn-default">取消修改</button>
     </div>
     <!-- /.box-footer -->
-
+        </form>
 </div>
 <!-- /.box -->
 </div>

@@ -1,6 +1,5 @@
 package com.mindnode.immipal.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mindnode.immipal.exception.upload.FileUploadException;
@@ -22,9 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,13 +36,14 @@ import java.util.List;
  * @date 2018/1/27
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/news")
 public class NewsController {
     private final int PAGE_SIZE = 10;
 
-    private final String REDIRECT_NEWS_LIST = "redirect:/admin/admin_news_list";
-    private final String REDIRECT_RECOMMEND_NEWS_LIST = "redirect:/admin/admin_news_list_recommend";
-    private final String REDIRECT_NEWS_LIST_BY_CATEGORY_ID = "redirect:/admin/admin_news_list_by_category_id";
+    private final String REDIRECT_NEWS_LIST = "redirect:/admin/news/admin_news_list";
+    private final String REDIRECT_RECOMMEND_NEWS_LIST = "redirect:/admin/news/admin_news_list_recommend";
+    private final String REDIRECT_NEWS_LIST_BY_CATEGORY_ID = "redirect:/admin/news/admin_news_list_by_category_id?categoryId=";
+    private final String REDIRECT_NEWS_ADD = "redirect:/admin/news/admin_news_add";
 
 
     @Autowired
@@ -53,6 +54,7 @@ public class NewsController {
     PicService picService;
     @Autowired
     VideoService videoService;
+    
 
     /**
      * 显示全部新闻列表
@@ -68,12 +70,15 @@ public class NewsController {
 
         List<News> newsList = null;
         List<Category> categoryList = null;
+
         try {
             newsList = newsService.listAllOrderByCreateTime();
-            categoryList = categoryService.listAll();
+            categoryList = categoryService.listAllOrderByLevel();
+            model.addAttribute("imgUrlMap", getShowImgUrlsMap(newsList));
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
+
 
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("newsList", newsList);
@@ -98,7 +103,9 @@ public class NewsController {
         List<Category> categoryList = null;
         try {
             newsList = newsService.listByRecommend();
-            categoryList = categoryService.listAll();
+            categoryList = categoryService.listAllOrderByLevel();
+    
+            model.addAttribute("imgUrlMap", getShowImgUrlsMap(newsList));
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -125,7 +132,9 @@ public class NewsController {
         List<Category> categoryList = null;
         try {
             newsList = newsService.listByCategoryId(categoryId);
-            categoryList = categoryService.listAll();
+            categoryList = categoryService.listAllOrderByLevel();
+            
+            model.addAttribute("imgUrlMap", getShowImgUrlsMap(newsList));
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -173,7 +182,17 @@ public class NewsController {
 
         return "admin/edit/editNews";
     }
-
+    
+    /**
+     * 查看新闻详情页面
+     */
+    @RequestMapping(value = "/admin_news_detail", method = RequestMethod.GET)
+    public String newsDetail(Integer newsId, Model model) {
+        News news = newsService.getByNewsId(newsId);
+        model.addAttribute("news", news);
+        return "admin/show/showNewsDetail";
+    }
+    
     /**
      * 新增新闻通过获取的categoryId设置categoryTitle
      * 新建一个新闻，要获取当前时间毫秒值
@@ -186,70 +205,78 @@ public class NewsController {
                           MultipartFile[] file,
                           String hasVideoOption,
                           Model model) {
+        
         try {
             //新闻所属栏目分类标题未分配，此时通过表单里的categoryId来分配其categoryTitle
             Category category = categoryService.get(news.getCategoryId());
             String categoryTitle = category.getCategoryTitle();
             news.setCategoryTitle(categoryTitle);
-
-            //设定其创建时间：包括时间信息及毫秒值;设定置顶与推荐的初始值
+            
+            //设定其创建时间：包括时间信息及毫秒值
             final long nowLong = System.currentTimeMillis();
             final Date nowDate = new Date(nowLong);
+            //设定置顶与推荐的初始值
             news.setNewsCreateTime(nowLong);
             news.setNewsDate(nowDate);
             news.setNewsTop(false);
             news.setRecommend(false);
             news.setNewsRecommendTop(false);
+            
+            StringBuilder imgUrl = new StringBuilder();
             // 判断是否有上传文件
             if (file.length == 0) {
                 model.addAttribute("message", "请上传展示图片");
-                return "redirect:/admin/admin_news_list";
+                return REDIRECT_NEWS_LIST;
             } else {
                 final String yes = "yes";
                 final String no = "no";
-                List<String> showImgUrlsList = new ArrayList<>();
                 //判断是否有视频,默认为no
-                if (hasVideoOption.equals(no)) {
-                    //设置hasVideo为false
-                    news.setHasVideo(false);
-
-                    //上传图片
-                    for (MultipartFile multipartFile : file) {
-                        //上传图片，将图片地址传入数据库，并返回服务器地址
-                        String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
-                        //设置showImgUrls
-                        showImgUrlsList.add(imgUrl);
-                    }
-                }
-                //如果有视频
-                if (hasVideoOption.equals(yes)) {
-                    // 设置hasVideo为true
-                    news.setHasVideo(true);
-                    //上传了一个视频，一张图片
-                    //判断是否为视频
-                    for (MultipartFile multipartFile : file) {
-                        //如果是视频，上传视频
-                        String originalName = multipartFile.getOriginalFilename();
-                        if (FileUpLoad.isVideo(originalName)) {
-                            String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
-                            //设置news的videoUrl
-                            news.setVideoUrl(videoUrl);
-                        }
-                        //如果是图片，上传图片
-                        else if(FileUpLoad.isPic(originalName)) {
+                switch (hasVideoOption) {
+                    
+                    case no:
+                        
+                        //设置hasVideo为false
+                        news.setHasVideo(false);
+                        
+                        //上传图片
+                        for (MultipartFile multipartFile : file) {
                             //上传图片，将图片地址传入数据库，并返回服务器地址
-                            String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
-                            //设置news的showImgUrls
-                            showImgUrlsList.add(imgUrl);
+                            imgUrl = imgUrl.append(uploadPicAndSetPicDB(session, multipartFile)).append(",");
                         }
-                        //如果是其他文件，返回原页面
-                        else {
-                            return "redirect:/admin/admin_news_add";
+                        break;
+                    
+                    case yes:
+                        
+                        // 设置hasVideo为true
+                        news.setHasVideo(true);
+                        //上传了一个视频，一张图片
+                        //判断是否为视频
+                        for (MultipartFile multipartFile : file) {
+                            //如果是视频，上传视频
+                            String originalName = multipartFile.getOriginalFilename();
+                            if (FileUpLoad.isVideo(originalName)) {
+                                String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
+                                //设置news的videoUrl
+                                news.setVideoUrl(videoUrl);
+                            }
+                            //如果是图片，上传图片
+                            else if (FileUpLoad.isPic(originalName)) {
+                                //上传图片，将图片地址传入数据库，并返回服务器地址
+                                imgUrl = imgUrl.append(uploadPicAndSetPicDB(session, multipartFile)).append(",");
+                            }
+                            //如果是其他文件，返回原页面
+                            else {
+                                return REDIRECT_NEWS_ADD;
+                            }
                         }
-                    }
+                        break;
+                    
+                    default:
+                        
+                        return REDIRECT_NEWS_LIST;
                 }
-                //图片上传完后设置news的showImgUrls字段
-                news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
+                //imgUrl为 "url,url,url," 的形式
+                news.setShowImgUrls(imgUrl.toString());
                 //最终都要新增入数据库
                 newsService.add(news);
             }
@@ -265,7 +292,6 @@ public class NewsController {
     @RequestMapping(value = "/admin_news_edit", method = RequestMethod.POST)
     public String editNews(HttpSession session,
                            News news,
-                           String content,
                            MultipartFile[] file,
                            String hasVideoOption,
                            String reUploadVideo,
@@ -280,107 +306,94 @@ public class NewsController {
             news.setCategoryTitle(categoryTitle);
 
             //设置新闻未被分配的属性
-            news.setNewsContent(content);
             news.setNewsDate(originalNews.getNewsDate());
             news.setNewsCreateTime(originalNews.getNewsCreateTime());
             news.setNewsTop(originalNews.getNewsTop());
             news.setRecommend(originalNews.getRecommend());
             news.setNewsRecommendTop(originalNews.getNewsRecommendTop());
 
+            StringBuilder imgUrl = new StringBuilder();
+
             final String yes = "yes";
             final String no = "no";
-            List<String> showImgUrlsList = new ArrayList<>();
-            //若重新上传视频或删除原视频
-            if (reUploadVideo.equals(yes)) {
-                //如果hasVideo为yes
-                if (hasVideoOption.equals(yes)) {
-                    // 设置hasVideo为true
-                    news.setHasVideo(true);
-                    // 判断是否重新上传展示图片
-                    if (reUploadPic.equals(yes)) {
-                        for (MultipartFile multipartFile : file) {
-                            //如果是视频，上传视频
-                            String originalName = multipartFile.getOriginalFilename();
-                            if (FileUpLoad.isVideo(originalName)) {
-                                String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
-                                //设置news的videoUrl
-                                news.setVideoUrl(videoUrl);
-                            }
-                            //如果是图片，上传图片
-                            else if (FileUpLoad.isPic(originalName)) {
-                                //上传图片，将图片地址传入数据库，并返回服务器地址
-                                String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
-                                //设置news的showImgUrls
-                                showImgUrlsList.add(imgUrl);
-                                //图片上传完后设置news的showImgUrls字段
-                                news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
-                            }
-                        }
-                    }
-                    if (reUploadPic.equals(no)) {
-                        for (MultipartFile multipartFile : file) {
-                            //如果是视频，上传视频
-                            String originalName = multipartFile.getOriginalFilename();
-                            if (FileUpLoad.isVideo(originalName)) {
-                                String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
-                                //设置news的videoUrl
-                                news.setVideoUrl(videoUrl);
-                            }
-                        }
-                        news.setShowImgCount(originalNews.getShowImgCount());
-                        news.setShowImgUrls(originalNews.getShowImgUrls());
-                    }
-                }
-                if (hasVideoOption.equals(no)) {
-                    //设置hasVideo为false
-                    news.setHasVideo(false);
-                    //上传图片
-                    if (file.length != 0) {
-                        for (MultipartFile multipartFile : file) {
-                            if (!multipartFile.isEmpty()) {
-                                //上传图片，将图片地址传入数据库，并返回服务器地址
-                                String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
-                                //设置showImgUrls
-                                showImgUrlsList.add(imgUrl);
-                                //图片上传完后设置news的showImgUrls字段
-                                news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
-                            }
-                        }
-                    }
-                }
-            }
-            //不更改视频
-            else if (reUploadVideo.equals(no)) {
-                news.setHasVideo(originalNews.getHasVideo());
-                news.setVideoUrl(originalNews.getVideoUrl());
-                if (reUploadPic.equals(yes)) {
-                    //上传图片
-                    if (file.length != 0) {
-                        for (MultipartFile multipartFile : file) {
-                            if (!multipartFile.isEmpty()) {
-                                String originalName = multipartFile.getOriginalFilename();
-                                if (FileUpLoad.isPic(originalName)) {
-                                    //上传图片，将图片地址传入数据库，并返回服务器地址
-                                    String imgUrl = uploadPicAndSetPicDB(session, multipartFile);
-                                    //设置showImgUrls
-                                    showImgUrlsList.add(imgUrl);
-                                    //图片上传完后设置news的showImgUrls字段
-                                    news.setShowImgUrls(JSON.toJSONString(showImgUrlsList));
+
+            //是否重新上传视频
+            switch (reUploadVideo) {
+                // 若重新上传视频或设置hasVideo为false
+                case yes:
+                    //设置是否有视频
+                    switch (hasVideoOption) {
+                        //重新上传视频
+                        case yes:
+                            // 设置hasVideo为true
+                            news.setHasVideo(true);
+                            //上传了一个视频，一张图片
+                            //判断是否为视频
+                            for (MultipartFile multipartFile : file) {
+                                //如果是视频，上传视频
+                                if (!multipartFile.isEmpty()) {
+                                    String originalName = multipartFile.getOriginalFilename();
+                                    if (FileUpLoad.isVideo(originalName)) {
+                                        String videoUrl = uploadVideoAndSetVideoDB(session, multipartFile);
+                                        //设置news的videoUrl
+                                        news.setVideoUrl(videoUrl);
+                                    }
+                                    //如果是其他文件，不管，往下执行
                                 }
                             }
+                            break;
+                        //设置没有视频
+                        case no:
+                            //设置hasVideo为false
+                            news.setHasVideo(false);
+                            //设置videoUrl为原来的值
+                            news.setVideoUrl(originalNews.getVideoUrl());
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                //若不重新上传视频
+                case no:
+                    // hasVideo设置为原来的值
+                    news.setHasVideo(originalNews.getHasVideo());
+                    //videoUrl设置为原来的值
+                    news.setVideoUrl(originalNews.getVideoUrl());
+                    break;
+                default:
+                    break;
+            }
+            //是否重新上传图片
+            switch (reUploadPic) {
+                // 重新上传图片
+                case yes:
+                    //判断是否有文件
+                    //判断是否为图片
+                    for (MultipartFile multipartFile : file) {
+                        if (!multipartFile.isEmpty()) {
+                            String originalName = multipartFile.getOriginalFilename();
+                            //如果是图片，上传图片
+                            if (FileUpLoad.isPic(originalName)) {
+                                //上传图片，将图片地址传入数据库，并返回服务器地址
+                                imgUrl = imgUrl.append(uploadPicAndSetPicDB(session, multipartFile)).append(",");
+                            }
+                            //如果是其他文件，不管，往下执行
                         }
                     }
-                }
-                //不上传图片
-                else if (reUploadPic.equals(no)) {
-                    news.setShowImgCount(originalNews.getShowImgCount());
+                    // 循环完设置news的showImgUrls为imgUrl
+                    news.setShowImgUrls(imgUrl.toString());
+                    break;
+                //不重新上传图片
+                case no:
+                    //设置showImgUrls为原来的值
                     news.setShowImgUrls(originalNews.getShowImgUrls());
-                }
+                    break;
+                default:
+                    break;
             }
-
-            //最终都要新增入数据库
+            //最终更新news
             newsService.update(news);
-        }catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
         return REDIRECT_NEWS_LIST;
@@ -400,7 +413,7 @@ public class NewsController {
      * 设为推荐
      */
     @RequestMapping(value = "/admin_news_recommend", method = RequestMethod.GET)
-    public String recommendNews(Integer newsId,Model model) {
+    public String recommendNews(Integer newsId) {
         News news = newsService.getByNewsId(newsId);
         news.setRecommend(true);
         newsService.update(news);
@@ -411,7 +424,7 @@ public class NewsController {
      * 取消推荐
      */
     @RequestMapping(value = "/admin_news_recommend_cancel", method = RequestMethod.GET)
-    public String cancelRecommendNews(Integer newsId,Model model) {
+    public String cancelRecommendNews(Integer newsId) {
         News news = newsService.getByNewsId(newsId);
         news.setRecommend(false);
         //没有了推荐自然也不会在推荐中置顶
@@ -444,7 +457,7 @@ public class NewsController {
 
     /**取消置顶*/
     @RequestMapping(value = "/admin_news_top_cancel",method = RequestMethod.GET)
-    public String cancelTopNews(Integer newsId,Model model) {
+    public String cancelTopNews(Integer newsId) {
 
         News news = newsService.getByNewsId(newsId);
         news.setNewsTop(false);
@@ -480,11 +493,25 @@ public class NewsController {
      * 取消推荐置顶
      */
     @RequestMapping(value = "/admin_news_recommend_top_cancel", method = RequestMethod.GET)
-    public String cancelTopRecommendNews(Integer newsId, Model model) {
+    public String cancelTopRecommendNews(Integer newsId) {
         News news = newsService.getByNewsId(newsId);
         news.setNewsRecommendTop(false);
         newsService.update(news);
         return REDIRECT_NEWS_LIST;
+    }
+    
+    /**
+     * 新闻图片的映射，key为newsId，value为showImgUrl转换成的Array
+     */
+    private Map<Integer, String[]> getShowImgUrlsMap(List<News> newsList) {
+        Map<Integer, String[]> imgUrlMap = new HashMap<>(16);
+        //获取每个news的showImgUrls字符串，通过split分割后获取到每张展示图片，存入imgUrlMap中
+        for (News news : newsList) {
+            String imgUrls = news.getShowImgUrls();
+            String[] imgUrlArray = imgUrls.split(",");
+            imgUrlMap.put(news.getNewsId(), imgUrlArray);
+        }
+        return imgUrlMap;
     }
 
     /**上传图片，并将图片地址存入数据库，并返回图片地址*/
@@ -507,7 +534,5 @@ public class NewsController {
         videoService.add(video);
         return videoUrl;
     }
-
-
 }
 

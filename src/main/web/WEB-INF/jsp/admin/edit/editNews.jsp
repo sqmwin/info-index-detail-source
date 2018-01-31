@@ -28,7 +28,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/admin_news_edit" enctype="multipart/form-data">
+        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/admin/news/admin_news_edit" enctype="multipart/form-data">
             <div class="box-body">
                 <div class="form-group">
                     <label for="newsId" class="col-sm-3 control-label">新闻ID</label>
@@ -85,13 +85,11 @@
                     <div class="col-sm-6">
                         <!-- 是否有视频，若有视频提供上传视频框 -->
                         <p class="col-sm-3 control-label text-left">
-                            <input type="radio" name="hasVideoOption" class="iradio_flat-blue" value="no" onclick="uploadVideo(false)"
-                                   <c:if test="${news.hasVideo == false}">checked</c:if>>
+                            <input type="radio" name="hasVideoOption" class="iradio_flat-blue" value="no" checked onclick="uploadVideo(false)">
                             无
                         </p>
                         <p class="col-sm-3 control-label">
-                            <input type="radio" name="hasVideoOption" class="iradio_flat-blue" value="yes" onclick="uploadVideo(true)"
-                                   <c:if test="${news.hasVideo == true}">checked</c:if>>
+                            <input type="radio" name="hasVideoOption" class="iradio_flat-blue" value="yes" onclick="uploadVideo(true)">
                             有
                         </p>
                         <br/><br/>
@@ -142,12 +140,12 @@
                 </div>
                 </div>
                 <div class="form-group">
-                    <label for="content" class="col-sm-3 control-label">新闻内容</label>
+                    <label for="newsContent" class="col-sm-3 control-label">新闻内容</label>
                     <div class="col-sm-8">
                         <div id="editor">
                             ${news.newsContent}
                         </div>
-                        <textarea class="form-control" id="content" name="content" style="display:none"></textarea>
+                        <textarea class="form-control" id="newsContent" name="newsContent" style="display:none"></textarea>
                     </div>
                 </div>
 
@@ -158,11 +156,11 @@
 
                 <button type="submit" class="btn btn-info pull-right">提交</button>
                 <input type="hidden" name="newsId" value="${news.newsId}">
-        </form>
-                <button onclick="location.href='${pageContext.request.contextPath}/admin/admin_news_list'" class="btn btn-default">取消</button>
+
+                <button type="button" onclick="location.href='${pageContext.request.contextPath}/admin/news/admin_news_list'" class="btn btn-default">取消</button>
             </div>
             <!-- /.box-footer -->
-
+        </form>
     </div>
     <!-- /.box -->
 </div>
@@ -199,7 +197,7 @@
         'code'  // 插入代码
     ];
     //获取此编辑框的textarea
-    var $content = $('#content');
+    var $content = $('#newsContent');
     editor.customConfig.onchange = function (html) {
         // 监控变化，同步更新到 textarea
         $content.val(html)

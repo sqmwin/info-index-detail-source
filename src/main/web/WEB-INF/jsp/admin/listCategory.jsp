@@ -45,10 +45,10 @@
                                 <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条栏目标题: activate to sort column ascending">
                                     导航条栏目标题
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
+                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条栏目等级: activate to sort column ascending">
                                     导航条栏目等级
                                 </th>
-                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条等级: activate to sort column ascending">
+                                <th class="sorting" tabindex="0" aria-controls="table" rowspan="1" colspan="1" aria-label="导航条栏目操作: activate to sort column ascending">
                                     导航条栏目操作
                                 </th>
                             </tr>
@@ -57,64 +57,64 @@
                             <tbody>
 
                             <c:forEach items="${categoryList}" var="c">
-                            <tr role="row">
-                                <td class="sorting_1">${c.categoryId}</td>
-                                <td>${c.categoryTitle}</td>
-                                <td>${c.categoryLevel}</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_edit_page?categoryId=${c.categoryId}'">编辑栏目</button>
-                                    <button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/admin_category_delete?categoryId=${c.categoryId}'">删除栏目</button>
-                                </td>
-                            </tr>
+                                <tr role="row">
+                                    <td class="sorting_1">${c.categoryId}</td>
+                                    <td>${c.categoryTitle}</td>
+                                    <td>${c.categoryLevel}</td>
+                                    <td>
+                                        <div class="col-md-6"><button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/category/admin_category_edit_page?categoryId=${c.categoryId}'">编辑栏目</button></div>
+                                        <div class="col-md-6"><button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/category/admin_category_delete?categoryId=${c.categoryId}'">删除栏目</button></div>
+                                    </td>
+                                </tr>
                             </c:forEach>
 
-                        </tbody>
-                        <form action="${pageContext.request.contextPath}/admin/admin_category_add" method="post">
-                        <tfoot>
-                        <tr>
-                            <th rowspan="1" colspan="1">
-                                <button type="submit" class="btn bg-navy btn-sm pull-left">新增导航条栏目</button>
-                            </th>
-                            <th rowspan="1" colspan="1">
-                                <input type="text" name="categoryTitle" placeholder="导航条标题">
-                            </th>
-                            <th rowspan="1" colspan="1">
-                                <div class="form-group">
-                                <select class="form-control" name="categoryLevel">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                </select>
-                                </div>
-                            </th>
-                            <th rowspan="1" colspan="1">
-                                <button type="submit" class="btn bg-navy btn-sm pull-left" >新增导航条栏目</button>
-                            </th>
-                        </tr>
-                        </tfoot>
-                        </form>
-                    </table>
+                            </tbody>
+                            <!-- 新增栏目 -->
+                            <form action="${pageContext.request.contextPath}/admin/category/admin_category_add" method="post">
+                                <tfoot>
+                                <tr>
+                                    <th rowspan="1" colspan="1">
+                                        <button type="submit" class="btn bg-navy btn-sm col-md-12">新增导航条栏目</button>
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                        <input type="text" name="categoryTitle" placeholder="导航条标题">
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                        <div class="form-group">
+                                        <select class="form-control" name="categoryLevel">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                        </select>
+                                        </div>
+                                    </th>
+                                    <th rowspan="1" colspan="1">
+                                        <button type="submit" class="btn bg-navy btn-sm col-md-12" >新增导航条栏目</button>
+                                    </th>
+                                </tr>
+                                </tfoot>
+                            </form>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">导航条栏目等级：1为最大，9为最小，等级越高在资讯页的排列越靠前</div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">导航条栏目等级：1为最大，9为最小，等级越高在资讯页的排列越靠前</div>
+                    </div>
                 </div>
-
-
-                <%@include file="../include/body/paginate.jsp"%>
-                
+                <div class="row col-sm-6 col-md-6">
+                    <%@include file="../include/body/paginate.jsp"%>
+                </div>
             </div>
         </div>
-    </div>
     <!-- /.box-body -->
-</div>
+    </div>
 </div>
 
 <%@include file="../include/body/body-bottom.jsp"%>

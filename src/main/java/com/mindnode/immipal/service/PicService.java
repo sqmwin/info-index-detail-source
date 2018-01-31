@@ -17,4 +17,6 @@ public interface PicService {
     Pic get(int picId);
 
     List<Pic> listAll();
+
+    List<Pic> listByNewsId(int newsId);
 }

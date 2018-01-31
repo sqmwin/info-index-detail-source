@@ -7,4 +7,4 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 
-<h3 class="alert-message">${message}</h3>
+<h4 class="alert-message">${message}</h4>

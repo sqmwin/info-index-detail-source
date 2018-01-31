@@ -18,4 +18,5 @@ public interface VideoService {
 
     List<Video> listAll();
 
+    List<Video> listByNewsId(int newsId);
 }

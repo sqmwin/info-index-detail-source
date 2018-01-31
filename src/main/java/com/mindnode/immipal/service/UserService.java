@@ -1,6 +1,7 @@
 package com.mindnode.immipal.service;
 
 import com.mindnode.immipal.exception.user.ChangePasswordException;
+import com.mindnode.immipal.exception.user.UserException;
 import com.mindnode.immipal.exception.user.WrongUserInformationException;
 import com.mindnode.immipal.pojo.User;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     void updatePassword(int id, String password, String ensure) throws ChangePasswordException;
 
-    void add(User user);
+    void add(User user,String password,String ensure) throws UserException;
 
     void delete(int userId);
 

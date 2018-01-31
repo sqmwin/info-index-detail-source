@@ -22,9 +22,10 @@ import java.util.List;
  * @date 2018/1/27
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/ad")
 public class AdController {
     private final int PAGE_SIZE = 10;
+    private final String REDIRECT_AD_LIST = "redirect:/admin/ad/admin_ad_list";
     @Autowired
     AdService adService;
 
@@ -58,7 +59,7 @@ public class AdController {
     public String addAd(HttpSession session, Ad ad, MultipartFile file, Model model) {
         if (ad.getAdTitle() == null && ad.getAdLink() == null) {
             model.addAttribute("message", "广告标题或广告链接不能为空");
-            return "redirect:/admin/admin_ad_list";
+            return REDIRECT_AD_LIST;
         } else {
             final long now = System.currentTimeMillis();
             final Date nowDate = new Date(now);
@@ -72,7 +73,7 @@ public class AdController {
             }
         }
         adService.add(ad);
-        return "redirect:/admin/admin_ad_list";
+        return REDIRECT_AD_LIST;
     }
 
     /**
@@ -106,7 +107,7 @@ public class AdController {
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
-        return "redirect:/admin/admin_ad_list";
+        return REDIRECT_AD_LIST;
     }
     /**
      * 删除广告
@@ -114,7 +115,7 @@ public class AdController {
     @RequestMapping(value = "/admin_ad_delete", method = RequestMethod.GET)
     public String deleteAd(Integer adId) {
         adService.delete(adId);
-        return "redirect:/admin/admin_ad_list";
+        return REDIRECT_AD_LIST;
     }
 }
 

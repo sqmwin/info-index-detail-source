@@ -27,7 +27,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini fixed">
 <div class="wrapper">
 
     <!-- Main Header -->
@@ -54,10 +54,10 @@ desired effect
                         <a href="#"><span class="hidden-xs">${pageContext.session.getAttribute("user").userNickname}</span></a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/admin/admin_user_change_password_page">修改密码</a>
+                        <a href="${pageContext.request.contextPath}/admin/user/admin_user_change_password_page">修改密码</a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/admin/admin_user_logout">退出登录</a>
+                        <a href="${pageContext.request.contextPath}/admin/user/admin_user_logout">退出登录</a>
                     </li>
                 </ul>
             </div>
@@ -73,10 +73,10 @@ desired effect
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">页面列表</li>
-                <li><a href="${pageContext.request.contextPath}/admin/admin_category_list"><i class="fa fa-circle-o"></i> <span>栏目管理页面</span></a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/admin_news_list"><i class="fa fa-circle-o"></i> <span>新闻管理页面</span></a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/admin_ad_list"><i class="fa fa-circle-o"></i> <span>广告管理页面</span></a></li>
-                <li><a href="${pageContext.request.contextPath}/admin/admin_user_list"><i class="fa fa-circle-o"></i> <span>管理用户页面</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/category/admin_category_list"><i class="fa fa-circle-o"></i> <span>栏目管理页面</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/news/admin_news_list"><i class="fa fa-circle-o"></i> <span>新闻管理页面</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/ad/admin_ad_list"><i class="fa fa-circle-o"></i> <span>广告管理页面</span></a></li>
+                <li><a href="${pageContext.request.contextPath}/admin/user/admin_user_list"><i class="fa fa-circle-o"></i> <span>管理用户页面</span></a></li>
             </ul>
             <!-- /.sidebar-menu -->
         </section>

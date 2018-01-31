@@ -38,4 +38,11 @@ public class PicServiceImpl implements PicService {
     public List<Pic> listAll(){
         return picMapper.selectByExample(new PicExample());
     }
+
+    @Override
+    public List<Pic> listByNewsId(int newsId) {
+        PicExample example = new PicExample();
+        example.createCriteria().andNewsIdEqualTo(newsId);
+        return picMapper.selectByExample(example);
+    }
 }
