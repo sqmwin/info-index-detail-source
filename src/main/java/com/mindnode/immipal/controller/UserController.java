@@ -25,6 +25,7 @@ import java.util.List;
 @RequestMapping("/admin/user")
 public class UserController {
     private static int PAGE_SIZE = 10;
+    private static String REDIRECT_USER_LIST = "redirect:/admin/user/admin_user_list";
     @Autowired
     UserService userService;
     
@@ -96,7 +97,8 @@ public class UserController {
     public String listUser(Integer pageNum, Model model) {
         if (pageNum == null) {
             PageHelper.startPage(1, PAGE_SIZE);
-        } else {
+        }
+        else {
             PageHelper.startPage(pageNum, PAGE_SIZE);
         }
         List<User> userList = userService.listExceptAdmin();
@@ -120,13 +122,24 @@ public class UserController {
      * 新增后台管理用户
      */
     @RequestMapping(value = "/admin_user_add", method = RequestMethod.POST)
-    public String addUser(User user, String password, String ensure,Model model) {
+    public String addUser(User user, String password, String ensure, Model model) {
         try {
             userService.add(user, password, ensure);
         } catch (UserException e) {
             model.addAttribute("message", e.getMessage());
             return "admin/add/addUser";
         }
-        return "redirect:/admin/user/admin_user_list";
+        return REDIRECT_USER_LIST;
+    }
+    
+    /**
+     * 编辑用户等级
+     */
+    @RequestMapping(value = "/admin_user_edit_level", method = RequestMethod.GET)
+    public String editUserLevel(Integer userId, Integer userLevel) {
+        User user = userService.get(userId);
+        user.setUserLevel(userLevel);
+        userService.update(user);
+        return REDIRECT_USER_LIST;
     }
 }

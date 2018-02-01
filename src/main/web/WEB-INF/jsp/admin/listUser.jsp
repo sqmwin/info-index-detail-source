@@ -68,9 +68,9 @@
                                     <td>${u.userUsername}</td>
                                     <td>********</td>
                                     <td>${u.userNickname}</td>
-                                    <td>${u.userLevel}</td>
+                                    <td id="userLevel">${u.userLevel}</td>
                                     <td>
-                                        <div class="col-md-6"><button class="btn btn-info btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/user/admin_user_edit_page?userId=${u.userId}'">编辑用户等级</button></div>
+                                        <div class="col-md-6"><button id="changeLevel" class="btn btn-info btn-sm" onclick="changeLevel(${u.userId},${u.userLevel})">编辑用户等级</button></div>
                                         <div class="col-md-6"><button class="btn btn-danger btn-sm" onclick="location.href='${pageContext.request.contextPath}/admin/user/admin_user_delete?userId=${u.userId}'">删除用户</button></div>
                                     </td>
                                 </tr>
@@ -105,4 +105,40 @@
 
     </div>
 </div>
+<script type="text/javascript">
+    function changeLevel(id,level) {
+        var levelTd = document.getElementById("userLevel");
+        //如果没有子节点,则清空html内容
+        if (!levelTd.hasAttribute("c")) {
+            levelTd.setAttribute("c", "c");
+            levelTd.innerHTML = "";
+            //设置一个select
+            var levelSelect = document.createElement("select");
+            levelSelect.setAttribute("id", "select");
+            levelSelect.setAttribute("class", "form-control");
+            levelSelect.setAttribute("name", "userLevel");
+            levelTd.appendChild(levelSelect);
+            //设置select的option
+            for (var i=1; i<10; i++) {
+                var option = document.createElement("option");
+                option.setAttribute("id", i);
+                option.setAttribute("value", i);
+                option.innerText = i;
+                if (level === i) {
+                    option.setAttribute("selected","true");
+                }
+                levelSelect.appendChild(option);
+            }
+        }
+        //如果有子节点
+        else if(levelTd.hasAttribute("c")){
+            var select = document.getElementById("select");
+            //获取被选中的option的index索引
+            var index = select.selectedIndex;
+            //获取被选中的option 的值
+            var value = select.options[index].value;
+            window.location.href = "${pageContext.request.contextPath}/admin/user/admin_user_edit_level?userId=" + id + "&userLevel=" + value;
+        }
+    }
+</script>
 <%@include file="../include/body/body-bottom.jsp"%>
